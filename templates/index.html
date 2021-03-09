@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<title>AMLR - Auto Machine Learging Report</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="AMLR - Auto Machine Learning Report" />
+<link rel="stylesheet" href="index.css">
+
+<body>
+
+    <!-- Navbar (sit on top) -->
+    <div class="amlr-top">
+        <div class="amlr-bar amlr-white amlr-wide amlr-padding amlr-card">
+            <a href="#home" class="amlr-bar-item amlr-button"><b>AMLR</b> Auto Machine Learning Report</a>
+            <!-- Float links to the right. Hide them on small screens -->
+            <div class="amlr-right amlr-hide-small">
+                <a href="#EDA" class="amlr-bar-item amlr-button">EDA</a>
+                <a href="#GRID" class="amlr-bar-item amlr-button">Grid</a>
+                <a href="#MP" class="amlr-bar-item amlr-button">Model Performance</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="amlr-display-container amlr-content amlr-wide" style="max-width:1500px;" id="home">
+        <img class="amlr-image" src="/amlrimages/architect.jpg" alt="Architecture" width="1500" height="800">
+        <div class="amlr-display-middle amlr-margin-top amlr-center">
+            <h1 class="amlr-xxlarge amlr-text-white"><span class="amlr-padding amlr-black amlr-opacity-min"><b>BR</b></span> <span class="amlr-hide-small amlr-text-light-grey">Architects</span></h1>
+        </div>
+    </header>
+    <div class="amlr-container amlr-padding-32" id="EDA">
+        <h3 class="amlr-border-bottom amlr-border-light-grey amlr-padding-16">Exploratory Data Analisys</h3>
+        <p>In statistics, exploratory data analysis is an approach to analyzing data sets to summarize their main characteristics, often using statistical graphics and other data visualization methods. A statistical model can be used or not, but primarily
+            EDA is for seeing what the data can tell us beyond the formal modeling or hypothesis testing task. Exploratory data analysis was promoted by John Tukey to encourage statisticians to explore the data, and possibly formulate hypotheses that
+            could lead to new data collection and experiments. EDA is different from initial data analysis (IDA), which focuses more narrowly on checking assumptions required for model fitting and hypothesis testing, and handling missing values and making
+            transformations of variables as needed. EDA encompasses IDA.
+            <BR>
+            <p align=right>
+                <a href='https://en.wikipedia.org/wiki/Exploratory_data_analysis' target="_blank">Wikipedia</a></span>
+            </p>
+        </p>
+    </div>
+    <!-- Page content -->
+    <BR>
+    <BR>
+    <h2>Preliminar Results</h2>
+    <div class="warpper">
+        <input class="radio" id="one" name="group" type="radio" checked>
+        <input class="radio" id="two" name="group" type="radio">
+        <input class="radio" id="three" name="group" type="radio">
+        <input class="radio" id="four" name="group" type="radio">
+        <input class="radio" id="five" name="group" type="radio">
+        <input class="radio" id="six" name="group" type="radio">
+        <div class="tabs">
+            <label class="tab" id="one-tab" for="one">Configuration</label>
+            <label class="tab" id="two-tab" for="two">Regression Analisys</label>
+            <label class="tab" id="three-tab" for="three">Unbalance Classes</label>
+            <label class="tab" id="four-tab" for="four">Correlation</label>
+            <label class="tab" id="five-tab" for="five">Multicollinearity</label>
+            <label class="tab" id="six-tab" for="six">Residual Analisys</label>
+        </div>
+        <div class="panels">
+            <div class="panel" id="one-panel">
+                <div class="panel-title">Data Set</div>
+                <table>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td><span style="color:Blue;">Shape </span> </td>
+                                    <td><span style="color:Red;">{{shape}}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span style="color:Blue;"> Classes </span> </td>
+                                    <td><span style="color:Green;">{{nclasses}}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span style="color:Blue;"> Classes Found</span> </td>
+                                    <td><span style="color:Green;">{{allclasses}}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span style="color:Blue;"> Duplicated </span> </td>
+                                    <td><span style="color:orange;">{{duplicated}}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span style="color:Blue;"> Excluded Features:</span> </td>
+                                    <td><span style="color:black;">{{excluded}}</span></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td> {{info_dataset}}</td>
+                    </tr>
+                </table>
+                Several characteristics define a data set's structure and properties. These include the number and types of the attributes or variables, and various statistical measures applicable to them, such as standard deviation and kurtosis. The values may be numbers,
+                such as real numbers or integers, for example representing a person's height in centimeters, but may also be nominal data (i.e., not consisting of numerical values), for example representing a person's ethnicity. More generally, values
+                may be of any of the kinds described as a level of measurement. For each variable, the values are normally all of the same kind. However, there may also be missing values, which must be indicated in some way.
+                <BR>
+                <p align=right>
+                    <a href="https://en.wikipedia.org/wiki/Data_set" target="_blank">Wikipedia</a>
+                </p>
+
+            </div>
+            <div class="panel" id="two-panel">
+                <div class="panel-title">Regression Analisys</div>
+                <p><pre>{{regression}}</pre></p>
+                <BR> In statistical modeling, regression analysis is a set of statistical processes for estimating the relationships between a dependent variable (often called the 'outcome variable') and one or more independent variables (often called 'predictors',
+                'covariates', or 'features'). The most common form of regression analysis is linear regression, in which one finds the line (or a more complex linear combination) that most closely fits the data according to a specific mathematical criterion.
+                <BR>
+                <p align=right><a href='https://en.wikipedia.org/wiki/Regression_analysis' target="_blank">Wikipedia</a></p>
+            </div>
+            <div class="panel" id="three-panel">
+                <div class="panel-title">Balance Classes</div>
+                <img src="images/img_unbalance.png" alt="Unbalance Classes">
+                <BR> The accuracy paradox is the paradoxical finding that accuracy is not a good metric for predictive models when classifying in predictive analytics. This is because a simple model may have a high level of accuracy but be too crude to be
+                useful. For example, if the incidence of category A is dominant, being found in 99% of cases, then predicting that every case is category A will have an accuracy of 99%. Precision and recall are better measures in such cases. The underlying
+                issue is that there is a class imbalance between the positive class and the negative class. Prior probabilities for these classes need to be accounted for in error analysis. Precision and recall help, but precision too can be biased by
+                very unbalanced class priors in the test sets.
+                <p align=right><a href='https://en.wikipedia.org/wiki/Accuracy_paradox' target="_blank">Wikipedia</a></p>
+            </div>
+            <div class="panel" id="four-panel">
+                <div class="panel-title">Correlation of the Features</div>
+                <img src="images/img_corr.png" alt="Correlation">
+                <BR> In statistics, correlation or dependence is any statistical relationship, whether causal or not, between two random variables or bivariate data. In the broadest sense correlation is any statistical association, though it commonly refers
+                to the degree to which a pair of variables are linearly related.
+                <p align=right><a href='https://en.wikipedia.org/wiki/Correlation_and_dependence' target="_blank">Wikipedia</a></p>
+            </div>
+
+            <div class="panel" id="five-panel">
+                <div class="panel-title">Detecting Multicollinearity with VIF</div>
+                <table>
+                    <tr>
+                        <td>
+                            {{vif}}
+                        </td>
+                        <td>
+                            <select name="ref_rubrique" id="ref_rubrique">
+                                <option value="1" selected> Select a Feature </option>
+                                {{vif_desc_option}}
+                            </select>
+                            <div id="ref_output"></div>
+                            <script type="text/javascript">
+                                var selectElement = document.getElementById('ref_rubrique');
+                                var divElement = document.getElementById('ref_output');
+
+                                selectElement.onchange = function() {
+                                        var selectedValue = selectElement.options[selectElement.selectedIndex].value;
+                                        if (selectedValue == '1') {
+                                            divElement.innerHTML = '<p><img src="images/blank.png"></p>'; 
+						{{vif_desc_table}}
+                                        };
+                            </script>
+
+                        </td>
+                    </tr>
+                </table>
+                In statistics, multicollinearity (also collinearity) is a phenomenon in which one predictor variable in a multiple regression model can be linearly predicted from the others with a substantial degree of accuracy. In this situation, the coefficient estimates
+                of the multiple regression may change erratically in response to small changes in the model or the data. Multicollinearity does not reduce the predictive power or reliability of the model as a whole, at least within the sample data set;
+                it only affects calculations regarding individual predictors. That is, a multivariate regression model with collinear predictors can indicate how well the entire bundle of predictors predicts the outcome variable, but it may not give valid
+                results about any individual predictor, or about which predictors are redundant with respect to others.
+                <p align=right><a href='https://en.wikipedia.org/wiki/Multicollinearity' target="_blank">Wikipedia</a></p>
+
+            </div>
+            <div class="panel" id="six-panel">
+                <div class="panel-title">Residual Analysis</div>
+                <img src="images/img_residual1.png" alt="qqplot">
+                <img src="images/img_residual2.png" alt="hist">
+                <BR> In statistics and optimization, errors and residuals are two closely related and easily confused measures of the deviation of an observed value of an element of a statistical sample from its "theoretical value". The error (or disturbance)
+                of an observed value is the deviation of the observed value from the (unobservable) true value of a quantity of interest, and the residual of an observed value is the difference between the observed value and the estimated value of the
+                quantity of interest.
+                <p align=right><a href='https://en.wikipedia.org/wiki/Errors_and_residuals' target="_blank">Wikipedia</a></p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- AML Section -->
+    <div class="amlr-container amlr-padding-32" id="GRID">
+        <h3 class="amlr-border-bottom amlr-border-light-grey amlr-padding-16">Grid - Hyperparameter optimization</h3>
+        <p>In machine learning, hyperparameter optimization or tuning is the problem of choosing a set of optimal hyperparameters for a learning algorithm. A hyperparameter is a parameter whose value is used to control the learning process. By contrast,
+            the values of other parameters (typically node weights) are learned.
+            <p align=right><a href='https://en.wikipedia.org/wiki/Hyperparameter_optimization' target="_blank">Wikipedia</a></p>
+        </p>
+    </div>
+    <p>
+        AutoML - Results The models are classified by a standard metric based on the type of problem (the second column of the scoreboard). In binary classification problems, this metric is AUC, and in classification problems in several classes, the metric is
+        the average error per class. In regression problems, the standard classification metric is deviation.</p>
+    {{auto_ml_results}}
+
+    <p><strong>Partial dependence plot (PDP)</strong> gives a graphical depiction of the marginal effect of a variable on the response. The effect of a variable is measured in change in the mean response. PDP assumes independence between the feature for
+        which is the PDP computed and the rest.</p>
+
+    <p><strong>An Individual Conditional Expectation (ICE) plot </strong>gives a graphical depiction of the marginal effect of a variable on the response. ICE plots are similar to partial dependence plots (PDP); PDP shows the average effect of a feature
+        while ICE plot shows the effect for a single instance. This function will plot the effect for each decile. In contrast to the PDP, ICE plots can provide more insight, especially when there is stronger feature interaction.</p>
+	<div style="overflow-x:auto;">
+    		<table>
+        		<tr>
+            		<td>
+                    		<h4>Variable Importance by Model</h4>
+                    		<img src="images/img_var_imp_model.png" alt="Variable Importance Model">
+            		</td>
+            		<td>
+                    		<h4><strong>AML</strong> - Partial Dependence</h4>
+                    		<select name="aml_pd" id="aml_pd">
+                            		<option value="100" selected> Select a Feature </option>
+                    				{{aml_pd_option}}
+                    		</select>
+                    		<div id="aml_pd_output"></div>
+                    		<script type="text/javascript">
+                        		var selectElement2 = document.getElementById('aml_pd');
+                        		var divElement2 = document.getElementById('aml_pd_output');
+		
+                        		selectElement2.onchange = function() {
+                                		var selectedValue2 = selectElement2.options[selectElement2.selectedIndex].value;
+                                		if (selectedValue2 == '100') {
+                                    		divElement2.innerHTML = '<p><img src="images/img_blank.png"></p>'; 
+							{{aml_pd_image}}
+                                		};
+                    		</script>
+			</tr>
+			<tr>
+	    		</td>
+		    		<td>
+                	    		<h4><strong>Ensemble </strong>- (ICE) Individual Condition Expectation</h4>
+                    		<select name="ice_pd" id="ice_pd">
+                            		<option value="200" selected> Select a Feature </option>
+                    				{{ice_pd_option}}
+                    		</select>
+                    		<div id="ice_pd_output"></div>
+                    		<script type="text/javascript">
+                        		var selectElement3 = document.getElementById('ice_pd');
+                        		var divElement3 = document.getElementById('ice_pd_output');
+		
+                        		selectElement3.onchange = function() {
+                                		var selectedValue3 = selectElement3.options[selectElement3.selectedIndex].value;
+                                		if (selectedValue3 == '200') {
+                                    		divElement3.innerHTML = '<p><img src="images/img_blank.png"></p>'; 
+							{{ice_pd_image}}
+                                		};
+                    		</script>
+                   		</td>
+				<td>
+					<h4>Correlation Heatmap by Model</h4>
+				                <img src="images/img_aml_correlation_models.png" alt="AML Correlation Model">
+				</td>
+        		</tr>
+    		</table>
+	</div>
+
+    <!-- Model Performance Section -->
+    <div class="amlr-container amlr-padding-32" id="MP">
+        <h3 class="amlr-border-bottom amlr-border-light-grey amlr-padding-16">Model Performance</h3>
+        <p>Analytical Performance Modeling</p>
+        Analytical Performance Modeling is a method to model the behaviour of a system in a spreadsheet. It is used in Software performance testing. It allows evaluation of design options and system sizing based on actual or anticipated business usage. It is
+        therefore much faster and cheaper than performance testing, though it requires thorough understanding of the hardware platforms
+        <p align=right><a href='https://en.wikipedia.org/wiki/Analytical_Performance_Modeling' target="_blank">Wikipedia</a></p>
+    </div>
+
+    <!-- Model Performance -->
+    <div class="amlr-container">
+        <h4>Comparatie Table</h4>
+		{{table_performance}}
+    </div>
+
+    <!-- End page content -->
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="amlr-center amlr-black amlr-padding-16">
+        <p>Powered by <a href="https://www.thescientist.com.br" title="amlr.CSS" target="_blank" class="amlr-hover-text-green">The Scientist</a></p>
+    </footer>
+
+</body>
+
+</html>
