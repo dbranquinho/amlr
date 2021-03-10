@@ -535,118 +535,49 @@ class report:
 
         self.gstep(1, "Processing Models Performance")
         plt.clf()
-        dfp = pd.DataFrame({'Algo': [],
-                            'F1': [],
-                            'AUC': [],
-                            'AUCPR': [],
-                            'Logloss':[],
-                            'ACC':[],
-                            'Precision':[],
-                            'Recall':[],
-                            'Gini':[],
-                            'MCC':[]})
-      
-        for algo in ['glm','rf','gbm','xgb','dl']:
-            if algo == 'glm':
+
+        i = 0
+        dfp = pd.DataFrame({'Algo': []})
+        outcome = list(valid[target].as_data_frame()[target])
+        for algo in ['GLM','Random Forest','GBM','xGBoost','Deep Learning']:
+            if algo == 'GLM':
                 predict = list(amlr_glm.predict(valid).as_data_frame()['predict'])
-                outcome = list(valid[target].as_data_frame()[target])
+                cf_table='cf_glm'
+            if algo == 'Random Forest':
+                predict = list(amlr_rf.predict(valid).as_data_frame()['predict'])
+                cf_table='cf_rf'
+            if algo == 'GBM':
+                predict = list(amlr_gbm.predict(valid).as_data_frame()['predict'])
+                cf_table='cf_gbm'
+            if algo == 'xGBoost':
+                predict = list(amlr_xgb.predict(valid).as_data_frame()['predict'])
+                cf_table='cf_xgb'
+            if algo == 'Deep Learning':
+                predict = list(dl_model.predict(valid).as_data_frame()['predict'])
+                cf_table='cf_dl'
+            # Confusion Matrix for all models
             cm = confusion_matrix(predict, outcome)
             cm = pd.DataFrame(cm)
-            cr = classification_report(outcome, predict,target_names=classes,output_dict=True)
-            table_cr = pd.DataFrame(cr).transpose()
+            cr = classification_report(outcome, predict,target_names=self.allclasses,output_dict=True)
+            table_cr = pd.DataFrame(cr).transpose().round(4)
+            table_cr.reset_index(level=0, inplace=True)
+            table_cr = table_cr.rename(columns={'index': 'Description'})
+            table_model = self.w_table(data=table_cr, border=0, align='left', 
+                                        collapse='collapse', color='black', 
+                                        foot=False)        
+            self.insert_text(cf_table, str(table_model))            
+
+            # Statistcs for all metrics
             cm = ConfusionMatrix(outcome, predict)
-            f1 = cm.F1[1]/cm.F1[2]
-            dfp = dfp.append({'Algo': 'Generalized Linear Model',
-                              'F1': "{:.4f}".format(round(amlr_glm.F1()[0][1],4)),
-                              'AUC': "{:.4f}".format(round(amlr_glm.auc(),4)),
-                              'AUCPR': "{:.4f}".format(round(amlr_glm.aucpr(),4)),
-                              'Logloss': "{:.4f}".format(round(amlr_glm.logloss(),4)),
-                              'ACC': "{:.4f}".format(round(amlr_glm.accuracy()[0][1],4)),
-                              'Precision': "{:.4f}".format(round(amlr_glm.precision()[0][0],4)),
-                              'Recall': "{:.4f}".format(round(amlr_glm.recall()[0][1],4)),
-                              'Gini': "{:.4f}".format(round(amlr_glm.gini(),4)),
-                              'MCC': "{:.4f}".format(round(amlr_glm.mcc()[0][1],4))}, ignore_index=True)
-            dfp = dfp.append({'Algo': 'Random Forest',
-                              'F1': "{:.4f}".format(round(amlr_rf.F1()[0][1],4)),
-                              'AUC': "{:.4f}".format(round(amlr_rf.auc(),4)),
-                              'AUCPR': "{:.4f}".format(round(amlr_rf.aucpr(),4)),
-                              'Logloss': "{:.4f}".format(round(amlr_rf.logloss(),4)),
-                              'ACC': "{:.4f}".format(round(amlr_rf.accuracy()[0][1],4)),
-                              'Precision': "{:.4f}".format(round(amlr_rf.precision()[0][0],4)),
-                              'Recall': "{:.4f}".format(round(amlr_rf.recall()[0][1],4)),
-                              'Gini': "{:.4f}".format(round(amlr_rf.gini(),4)),
-                              'MCC': "{:.4f}".format(round(amlr_rf.mcc()[0][1],4))}, ignore_index=True)
-            dfp = dfp.append({'Algo': 'Gradient Boosting Machine',
-                              'F1': "{:.4f}".format(round(amlr_gbm.F1()[0][1],4)),
-                              'AUC': "{:.4f}".format(round(amlr_gbm.auc(),4)),
-                              'AUCPR': "{:.4f}".format(round(amlr_gbm.aucpr(),4)),
-                              'Logloss': "{:.4f}".format(round(amlr_gbm.logloss(),4)),
-                              'ACC': "{:.4f}".format(round(amlr_gbm.accuracy()[0][1],4)),
-                              'Precision': "{:.4f}".format(round(amlr_gbm.precision()[0][0],4)),
-                              'Recall': "{:.4f}".format(round(amlr_gbm.recall()[0][1],4)),
-                              'Gini': "{:.4f}".format(round(amlr_gbm.gini(),4)),
-                              'MCC': "{:.4f}".format(round(amlr_gbm.mcc()[0][1],4))}, ignore_index=True)
-            dfp = dfp.append({'Algo': 'XGBoost',
-                              'F1': "{:.4f}".format(round(amlr_xgb.F1()[0][1],4)),
-                              'AUC': "{:.4f}".format(round(amlr_xgb.auc(),4)),
-                              'AUCPR': "{:.4f}".format(round(amlr_xgb.aucpr(),4)),
-                              'Logloss': "{:.4f}".format(round(amlr_xgb.logloss(),4)),
-                              'ACC': "{:.4f}".format(round(amlr_xgb.accuracy()[0][1],4)),
-                              'Precision': "{:.4f}".format(round(amlr_xgb.precision()[0][0],4)),
-                              'Recall': "{:.4f}".format(round(amlr_xgb.recall()[0][1],4)),
-                              'Gini': "{:.4f}".format(round(amlr_xgb.gini(),4)),
-                              'MCC': "{:.4f}".format(round(amlr_xgb.mcc()[0][1],4))}, ignore_index=True)
-            dfp = dfp.append({'Algo': 'Deep Learning',
-                            'F1': "{:.4f}".format(round(dl_model.F1()[0][1],4)),
-                            'AUC': "{:.4f}".format(round(dl_model.auc(),4)),
-                            'AUCPR': "{:.4f}".format(round(dl_model.aucpr(),4)),
-                            'Logloss': "{:.4f}".format(round(dl_model.logloss(),4)),
-                            'ACC': "{:.4f}".format(round(dl_model.accuracy()[0][1],4)),
-                            'Precision': "{:.4f}".format(round(dl_model.precision()[0][0],4)),
-                            'Recall': "{:.4f}".format(round(dl_model.recall()[0][1],4)),
-                            'Gini': "{:.4f}".format(round(dl_model.gini(),4)),
-                            'MCC': "{:.4f}".format(round(dl_model.mcc()[0][1],4))}, ignore_index=True)
-            metric = dfp.copy()
-            metric['F1_v'] = 0
-            metric['AUC_v'] = 0
-            metric['AUCPR_v'] = 0
-            metric['Logloss_v'] = 0
-            metric['ACC_v'] = 0
-            metric['F1_v'] = 0
-            metric['Precision_v'] = 0
-            metric['Recall_v'] = 0
-            metric['Gini_v'] = 0
-            metric['MCC_v'] = 0
-            metric['Winner'] = 0
-            self.gstep(1, "Processing Metrics")
-
-
-            for i in dfp.columns:
-                if (i == 'Algo'):
-                    continue
-                if i == 'MCC_v':
-                    break
-                x = i
-                y = x+'_v'
-                if (i == 'MCC' or i == 'Logloss' or i == 'Gini'):
-                    first_model = metric.sort_values(by=i).copy()
-                else:
-                    first_model = metric.sort_values(by=i, ascending=False).copy()
-                first_model.loc[first_model.index[0], y] = 1
-                metric = first_model.copy()
-            metric = metric.reset_index()
-            metric = metric.drop('index', axis=1)
-            for i in range(metric.shape[0]):
-                metric.loc[i:i+1, 'total'] = metric.iloc[i:i + 1, 10:18].sum().sum()
-            metric.drop(columns=['F1_v','AUC_v','AUCPR_v','Logloss_v',
-                                 'ACC_v','Precision_v','Recall_v','Gini_v',
-                                 'MCC_v'], inplace=True)
-            metric = metric.sort_values(by='Winner', ascending=False)
-     
-            table_model = self.w_table(data=metric, border=0, align='left', 
-                                       collapse='collapse', color='black', 
-                                       foot=False)        
-            self.insert_text("table_performance", str(table_model))
+            dfp = pd.concat([dfp, pd.DataFrame(cm.overall_stat)[1:]],ignore_index=True)
+            dfp.loc[i:,['Algo']] = algo
+            i = i + 1
+        dfp = dfp.round(4)
+    
+        table_model = self.w_table(data=dfp, border=0, align='left', 
+                                    collapse='collapse', color='black', 
+                                    foot=False)        
+        self.insert_text("table_performance", str(table_model))
 
         self.gstep(1, "Closing!! All works are done!!")
         # write report        
