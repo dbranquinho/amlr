@@ -28,6 +28,8 @@ from h2o.estimators.glm import H2OGeneralizedLinearEstimator
 from h2o.estimators import H2ODeepLearningEstimator
 import cv2
 from pycm import *
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
 
 class report:
 
@@ -260,7 +262,6 @@ class report:
                       type='html', 
                       target='none', 
                       duplicated=True,
-                      filename='amlr.html',
                       sep=';', exclude='none'):
         if dataset == 'none':
             raise ValueError("Dataset not found")
@@ -315,7 +316,7 @@ class report:
             dtype = self.dfo[column].dtypes
             df_info = df_info.append({'column': column, 'not_null': not_null, 'dtype': dtype}, ignore_index=True)
         df_info['not_null'] = df_info['not_null'].apply(lambda x: int(x))
-        df_info['percent'] = df_info['not_null'].apply(lambda x: float("{:.2f}".format(1-(x/self.dfo.shape[0]))))
+        df_info['percent'] = df_info['not_null'].apply(lambda x: float("{:.4f}".format(1-(x/self.dfo.shape[0]))))
         info_dataset = self.w_table(data=df_info, border=0, align='left', 
                        collapse='collapse', color='black', 
                        foot=False)
@@ -456,6 +457,7 @@ class report:
         amlr_glm = H2OGeneralizedLinearEstimator(family=family,
                                             nfolds=nfolds,
                                             lambda_ = 0,
+                                            balance_classes=True,
                                             fold_assignment="Modulo",
                                             compute_p_values = True,
                                             keep_cross_validation_predictions=True,
@@ -466,6 +468,7 @@ class report:
         amlr_rf = H2ORandomForestEstimator(ntrees=50,
                                         nfolds=nfolds,
                                         fold_assignment="Modulo",
+                                        balance_classes=True,
                                         keep_cross_validation_predictions=True,
                                         seed=1)
         amlr_rf.train(x=x, y=y, training_frame=train)
@@ -473,6 +476,7 @@ class report:
         self.gstep(1, "Trainning (GBM) Gradient Boost Estimator Model to Ensemble")
         amlr_gbm = H2OGradientBoostingEstimator(nfolds=nfolds,
                                             seed=1111,
+                                            balance_classes=True,
                                             fold_assignment="Modulo",
                                             keep_cross_validation_predictions = True)
         amlr_gbm.train(x=x, y=y, training_frame=train)
@@ -531,18 +535,27 @@ class report:
 
         self.gstep(1, "Processing Models Performance")
         plt.clf()
+        dfp = pd.DataFrame({'Algo': [],
+                            'F1': [],
+                            'AUC': [],
+                            'AUCPR': [],
+                            'Logloss':[],
+                            'ACC':[],
+                            'Precision':[],
+                            'Recall':[],
+                            'Gini':[],
+                            'MCC':[]})
       
-        if self.type_class == "b":
-            dfp = pd.DataFrame({'Algo': [],
-                                'F1': [],
-                                'AUC': [],
-                                'AUCPR': [],
-                                'Logloss':[],
-                                'ACC':[],
-                                'Precision':[],
-                                'Recall':[],
-                                'Gini':[],
-                                'MCC':[]})
+        for algo in ['glm','rf','gbm','xgb','dl']:
+            if algo == 'glm':
+                predict = list(amlr_glm.predict(valid).as_data_frame()['predict'])
+                outcome = list(valid[target].as_data_frame()[target])
+            cm = confusion_matrix(predict, outcome)
+            cm = pd.DataFrame(cm)
+            cr = classification_report(outcome, predict,target_names=classes,output_dict=True)
+            table_cr = pd.DataFrame(cr).transpose()
+            cm = ConfusionMatrix(outcome, predict)
+            f1 = cm.F1[1]/cm.F1[2]
             dfp = dfp.append({'Algo': 'Generalized Linear Model',
                               'F1': "{:.4f}".format(round(amlr_glm.F1()[0][1],4)),
                               'AUC': "{:.4f}".format(round(amlr_glm.auc(),4)),
@@ -604,7 +617,7 @@ class report:
             metric['Recall_v'] = 0
             metric['Gini_v'] = 0
             metric['MCC_v'] = 0
-            metric['total'] = 0
+            metric['Winner'] = 0
             self.gstep(1, "Processing Metrics")
 
 
@@ -628,7 +641,7 @@ class report:
             metric.drop(columns=['F1_v','AUC_v','AUCPR_v','Logloss_v',
                                  'ACC_v','Precision_v','Recall_v','Gini_v',
                                  'MCC_v'], inplace=True)
-            metric = metric.sort_values(by='total', ascending=False)
+            metric = metric.sort_values(by='Winner', ascending=False)
      
             table_model = self.w_table(data=metric, border=0, align='left', 
                                        collapse='collapse', color='black', 

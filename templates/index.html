@@ -249,22 +249,91 @@
     <!-- Model Performance Section -->
     <div class="amlr-container amlr-padding-32" id="MP">
         <h3 class="amlr-border-bottom amlr-border-light-grey amlr-padding-16">Model Performance</h3>
-        <p>Analytical Performance Modeling</p>
+        <h4>Analytical Performance Modeling</h4>
         Analytical Performance Modeling is a method to model the behaviour of a system in a spreadsheet. It is used in Software performance testing. It allows evaluation of design options and system sizing based on actual or anticipated business usage. It is
         therefore much faster and cheaper than performance testing, though it requires thorough understanding of the hardware platforms
         <p align=right><a href='https://en.wikipedia.org/wiki/Analytical_Performance_Modeling' target="_blank">Wikipedia</a></p>
     </div>
-
+	<hr>
     <!-- Model Performance -->
-    <div class="amlr-container">
-        <h4>Comparatie Table</h4>
+    <div class="amlr-container" align=center>
+        <h4>Comparative Table</h4>
 		{{table_performance}}
     </div>
+    <hr>
+	<div style="overflow-x:auto;" align="center">	
+		<table>
+			<tr>
+        		<h5>Gradient Linear Estimator</h5>
+				<td>
+					<h6>Confusion Matrix</h6>
+					{{cf_glm}}
+				</td>
+				<td>
+					<h6>Feature Importance</h6>
+					{{fi_glm}}
+				</td>
+			</tr>
+		</table>
+    <hr>
+		<table>
+			<tr>
+        		<h5>Dynamic Random Forest</h5>
+				<td>
+					<h6>Confusion Matrix</h6>
+					{{cf_drf}}
+				</td>
+				<td>
+					<h6>Feature Importance</h6>
+					{{fi_drf}}
+				</td>
+			</tr>
+		</table>
+    <hr>
+		<table>
+			<tr>
+        		<h5>Gradient Boost Machine</h5>
+				<td>
+					<h6>Confusion Matrix</h6>
+					{{cf_gbm}}
+				</td>
+				<td>
+					<h6>Feature Importance</h6>
+					{{fi_gbm}}
+				</td>
+			</tr>
+		</table>
+    <hr>
+		<table>
+			<tr>
+        		<h5>XGBoost</h5>
+				<td>
+					<h6>Confusion Matrix</h6>
+					{{cf_xgb}}
+				</td>
+				<td>
+					<h6>Feature Importance</h6>
+					{{fi_xgb}}
+				</td>
+			</tr>
+		</table>
+    <hr>
+		<table>
+			<tr>
+        		<h5>Deep Learning</h5>
+				<td>
+					<h6>Confusion Matrix</h6>
+					{{cf_dl}}
+				</td>
+				<td>
+					<h6>Feature Importance</h6>
+					{{fi_dl}}
+				</td>
+			</tr>
+		</table>
+	</div>
 
-    <!-- End page content -->
-    </div>
-
-
+    <hr>
     <!-- Footer -->
     <footer class="amlr-center amlr-black amlr-padding-16">
         <p>Powered by <a href="https://www.thescientist.com.br" title="amlr.CSS" target="_blank" class="amlr-hover-text-green">The Scientist</a></p>
