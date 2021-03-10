@@ -27,6 +27,7 @@ from h2o.grid.grid_search import H2OGridSearch
 from h2o.estimators.glm import H2OGeneralizedLinearEstimator
 from h2o.estimators import H2ODeepLearningEstimator
 import cv2
+from pycm import *
 
 class report:
 
@@ -58,41 +59,6 @@ class report:
         self.index_html = ''
         self.load_report()
         plt.rc('figure', max_open_warning = 0)
-
-    def setDRFParam(ntrees=200,
-                    max_depth=20,
-                    balance_classes=True,
-                    sample_rate=0.75,
-                    col_sample_rate_per_tree=0.8,
-                    min_rows=5,
-                    seed=3333,
-                    score_tree_interval=5,
-                    calibrate_model=False,
-                    categorical_encoding="one_hot_explicit",
-                    distribution="multinomial",
-                    fold_assignment="Stratified",
-                    histogram_type="auto",
-                    keep_cross_validation_predictions=True,
-                    nfolds=5):
-    
-            param = {
-                "ntrees" : ntrees                                      
-                , "max_depth" : max_depth                                
-                , "balance_classes" : balance_classes                    
-                , "sample_rate" : sample_rate
-                , "col_sample_rate_per_tree" : col_sample_rate_per_tree
-                , "min_rows" : min_rows
-                , "seed": seed
-                , "score_tree_interval": score_tree_interval
-                , "calibrate_model": calibrate_model
-                , "categorical_encoding": categorical_encoding
-                , "distribution": distribution
-                , "fold_assignment": fold_assignment
-                , "histogram_type": histogram_type
-                , "nfolds": nfolds
-            }
-            return(param)
-        
 
 
     def init_h2o(self, progress=False):
@@ -627,8 +593,44 @@ class report:
                             'Recall': "{:.4f}".format(round(dl_model.recall()[0][1],4)),
                             'Gini': "{:.4f}".format(round(dl_model.gini(),4)),
                             'MCC': "{:.4f}".format(round(dl_model.mcc()[0][1],4))}, ignore_index=True)
-                                        
-            table_model = self.w_table(data=dfp, border=0, align='left', 
+            metric = dfp.copy()
+            metric['F1_v'] = 0
+            metric['AUC_v'] = 0
+            metric['AUCPR_v'] = 0
+            metric['Logloss_v'] = 0
+            metric['ACC_v'] = 0
+            metric['F1_v'] = 0
+            metric['Precision_v'] = 0
+            metric['Recall_v'] = 0
+            metric['Gini_v'] = 0
+            metric['MCC_v'] = 0
+            metric['total'] = 0
+            self.gstep(1, "Processing Metrics")
+
+
+            for i in dfp.columns:
+                if (i == 'Algo'):
+                    continue
+                if i == 'MCC_v':
+                    break
+                x = i
+                y = x+'_v'
+                if (i == 'MCC' or i == 'Logloss' or i == 'Gini'):
+                    first_model = metric.sort_values(by=i).copy()
+                else:
+                    first_model = metric.sort_values(by=i, ascending=False).copy()
+                first_model.loc[first_model.index[0], y] = 1
+                metric = first_model.copy()
+            metric = metric.reset_index()
+            metric = metric.drop('index', axis=1)
+            for i in range(metric.shape[0]):
+                metric.loc[i:i+1, 'total'] = metric.iloc[i:i + 1, 10:18].sum().sum()
+            metric.drop(columns=['F1_v','AUC_v','AUCPR_v','Logloss_v',
+                                 'ACC_v','Precision_v','Recall_v','Gini_v',
+                                 'MCC_v'], inplace=True)
+            metric = metric.sort_values(by='total', ascending=False)
+     
+            table_model = self.w_table(data=metric, border=0, align='left', 
                                        collapse='collapse', color='black', 
                                        foot=False)        
             self.insert_text("table_performance", str(table_model))
