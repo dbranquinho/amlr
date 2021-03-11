@@ -257,8 +257,13 @@
 	<hr>
     <!-- Model Performance -->
     <div class="amlr-container" align=center style="overflow-x:auto;">
-        <h4>Comparative Table</h4>
+        <h4>Comparative Metrics Table</h4>
 		{{table_performance}}
+    </div>
+    <div>
+        <h4>The Best Algorithms</h4>
+		{{best_algorithms}}
+		<p><span style="color:Blue;">The best name:</span><span style="color:Red;"> {{the_best_name}} </span></p>
     </div>
     <hr>
 	<div style="overflow-x:auto;" align="center">	
@@ -271,7 +276,7 @@
 				</td>
 				<td>
 					<h6>Feature Importance</h6>
-					{{fi_glm}}
+					<img src="images/img_fi_glm.png" alt="Feature Importance">
 				</td>
 			</tr>
 		</table>
@@ -285,7 +290,7 @@
 				</td>
 				<td>
 					<h6>Feature Importance</h6>
-					{{fi_rf}}
+					<img src="images/img_fi_rf.png" alt="Feature Importance">
 				</td>
 			</tr>
 		</table>
@@ -299,7 +304,7 @@
 				</td>
 				<td>
 					<h6>Feature Importance</h6>
-					{{fi_gbm}}
+					<img src="images/img_fi_gbm.png" alt="Feature Importance">
 				</td>
 			</tr>
 		</table>
@@ -309,11 +314,11 @@
         		<h5>XGBoost</h5>
 				<td>
 					<h6>Confusion Matrix</h6>
-					{{cf_xgb}}
+					{{fc_xgb}}
 				</td>
 				<td>
 					<h6>Feature Importance</h6>
-					{{fi_xgb}}
+					<img src="images/img_fi_xgb.png" alt="Feature Importance">
 				</td>
 			</tr>
 		</table>
@@ -327,7 +332,7 @@
 				</td>
 				<td>
 					<h6>Feature Importance</h6>
-					{{fi_dl}}
+					<img src="images/img_fi_dl.png" alt="Feature Importance">
 				</td>
 			</tr>
 		</table>

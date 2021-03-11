@@ -534,27 +534,69 @@ class report:
         self.write_image(aml.model_correlation_heatmap(test),'aml_correlation_models')
 
         self.gstep(1, "Processing Models Performance")
-        plt.clf()
 
         i = 0
         dfp = pd.DataFrame({'Algo': []})
         outcome = list(valid[target].as_data_frame()[target])
         for algo in ['GLM','Random Forest','GBM','xGBoost','Deep Learning']:
+            plt.clf()
             if algo == 'GLM':
                 predict = list(amlr_glm.predict(valid).as_data_frame()['predict'])
                 cf_table='cf_glm'
+                cm_glm = ConfusionMatrix(outcome, predict)
+                glm_var_imp = amlr_glm._model_json['output']['variable_importances'].as_data_frame()
+                x = glm_var_imp['percentage']
+                x.index = glm_var_imp['variable']
+                x.sort_values().plot(kind='barh')
+                plt.xlabel('Percentage')
+                fig = plt.gcf()
+                self.write_image(fig,'fi_glm',width=450,height=450)
+                
+                
             if algo == 'Random Forest':
                 predict = list(amlr_rf.predict(valid).as_data_frame()['predict'])
                 cf_table='cf_rf'
+                cm_rf = ConfusionMatrix(outcome, predict)
+                rf_var_imp = amlr_rf._model_json['output']['variable_importances'].as_data_frame()
+                x = rf_var_imp['percentage']
+                x.index = rf_var_imp['variable']
+                x.sort_values().plot(kind='barh')
+                plt.xlabel('Percentage')
+                fig = plt.gcf()
+                self.write_image(fig,'fi_rf',width=450,height=450)
             if algo == 'GBM':
                 predict = list(amlr_gbm.predict(valid).as_data_frame()['predict'])
                 cf_table='cf_gbm'
+                cm_gbm = ConfusionMatrix(outcome, predict)
+                gbm_var_imp = amlr_gbm._model_json['output']['variable_importances'].as_data_frame()
+                x = gbm_var_imp['percentage']
+                x.index = gbm_var_imp['variable']
+                x.sort_values().plot(kind='barh')
+                plt.xlabel('Percentage')
+                fig = plt.gcf()
+                self.write_image(fig,'fi_gbm',width=450,height=450)
             if algo == 'xGBoost':
                 predict = list(amlr_xgb.predict(valid).as_data_frame()['predict'])
                 cf_table='cf_xgb'
+                cm_xgb = ConfusionMatrix(outcome, predict)
+                xgb_var_imp = amlr_xgb._model_json['output']['variable_importances'].as_data_frame()
+                x = xgb_var_imp['percentage']
+                x.index = xgb_var_imp['variable']
+                x.sort_values().plot(kind='barh')
+                plt.xlabel('Percentage')
+                fig = plt.gcf()
+                self.write_image(fig,'fi_xgb',width=450,height=450)
             if algo == 'Deep Learning':
                 predict = list(dl_model.predict(valid).as_data_frame()['predict'])
                 cf_table='cf_dl'
+                cm_dl = ConfusionMatrix(outcome, predict)
+                dl_var_imp = dl_model._model_json['output']['variable_importances'].as_data_frame()
+                x = dl_var_imp['percentage']
+                x.index = dl_var_imp['variable']
+                x.sort_values().plot(kind='barh')
+                plt.xlabel('Percentage')
+                fig = plt.gcf()
+                self.write_image(fig,'fi_dl',width=450,height=450)
             # Confusion Matrix for all models
             cm = confusion_matrix(predict, outcome)
             cm = pd.DataFrame(cm)
@@ -574,6 +616,17 @@ class report:
             i = i + 1
         dfp = dfp.round(4)
     
+        cp = Compare({'RF':cm_rf,'GLM':cm_glm,'GBM':cm_gbm,'XGB':cm_xgb,'DL':cm_dl})
+        cp_best_name = cp.best_name
+        cp = pd.DataFrame(cp.scores)
+        cp.reset_index(level=0, inplace=True)
+        cp = cp.rename(columns={'index': 'Description'})        
+        table_cp = self.w_table(data=cp, border=0, align='left', 
+                                    collapse='collapse', color='black', 
+                                    foot=False)        
+        self.insert_text("best_algorithms", str(table_cp))
+        self.insert_text("the_best_name", str(cp_best_name))
+        
         table_model = self.w_table(data=dfp, border=0, align='left', 
                                     collapse='collapse', color='black', 
                                     foot=False)        
