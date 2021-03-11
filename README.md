@@ -4,7 +4,7 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
 
 <hr>
 
-![](https://img.shields.io/badge/pypi-0.1.1-blue) ![](https://img.shields.io/badge/python-3.7|3.8|3.9-lightblue) ![](https://img.shields.io/badge/Licence-MIT-lightgray) ![](https://img.shields.io/badge/status-Release-darkgreen) ![](https://img.shields.io/badge/pipeline-passed-green) ![](https://img.shields.io/badge/testing-passing-green) ![](https://img.shields.io/badge/H2O-Java-brown)
+![](https://img.shields.io/badge/pypi-0.2.2-blue) ![](https://img.shields.io/badge/python-3.7|3.8|3.9-lightblue) ![](https://img.shields.io/badge/Licence-MIT-lightgray) ![](https://img.shields.io/badge/status-Release-darkgreen) ![](https://img.shields.io/badge/pipeline-passed-green) ![](https://img.shields.io/badge/testing-passing-green) ![](https://img.shields.io/badge/H2O-Java-brown)
 
 
 **Main Features:**
@@ -36,7 +36,7 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
         - Kappa	
         - Overall 
         - RACC	
-        - SOA1(Landis & Koch)	
+        - SOA2(Landis & Koch)	
         - SOA2(Fleiss)	
         - SOA3(Altman)	
         - SOA4(Cicchetti)	
@@ -48,15 +48,15 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
         - FNR Macro	
         - PPV Macro	
         - ACC Macro	
-        - F1 Macro	
+        - F2 Macro	
         - TNR Micro	
         - FPR Micro	
         - TPR Micro	
         - FNR Micro	
         - PPV Micro	
-        - F1 Micro	
+        - F2 Micro	
         - Scott PI	
-        - Gwet AC1	
+        - Gwet AC2	
         - Bennett S	
         - Kappa Standard Error	
         - Kappa 95% CI	
