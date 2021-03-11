@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html>
+<title>AMLR - Auto Machine Learging Report</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="AMLR - Auto Machine Learning Report" />
+<link rel="stylesheet" href="index.css">
+
+<body>
+
+    <!-- Navbar (sit on top) -->
+    <div class="amlr-top">
+        <div class="amlr-bar amlr-white amlr-wide amlr-padding amlr-card">
+            <a href="#home" class="amlr-bar-item amlr-button"><b>AMLR</b> Auto Machine Learning Report</a>
+            <!-- Float links to the right. Hide them on small screens -->
+            <div class="amlr-right amlr-hide-small">
+                <a href="#EDA" class="amlr-bar-item amlr-button">EDA</a>
+                <a href="#GRID" class="amlr-bar-item amlr-button">Grid</a>
+                <a href="#MP" class="amlr-bar-item amlr-button">Model Performance</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="amlr-display-container amlr-content amlr-wide" style="max-width:1500px;" id="home">
+        <img class="amlr-image" src="/amlrimages/architect.jpg" alt="Architecture" width="1500" height="800">
+        <div class="amlr-display-middle amlr-margin-top amlr-center">
+            <h1 class="amlr-xxlarge amlr-text-white"><span class="amlr-padding amlr-black amlr-opacity-min"><b>BR</b></span> <span class="amlr-hide-small amlr-text-light-grey">Architects</span></h1>
+        </div>
+    </header>
+    <div class="amlr-container amlr-padding-32" id="EDA">
+        <h3 class="amlr-border-bottom amlr-border-light-grey amlr-padding-16">Exploratory Data Analisys</h3>
+        <p>In statistics, exploratory data analysis is an approach to analyzing data sets to summarize their main characteristics, often using statistical graphics and other data visualization methods. A statistical model can be used or not, but primarily
+            EDA is for seeing what the data can tell us beyond the formal modeling or hypothesis testing task. Exploratory data analysis was promoted by John Tukey to encourage statisticians to explore the data, and possibly formulate hypotheses that
+            could lead to new data collection and experiments. EDA is different from initial data analysis (IDA), which focuses more narrowly on checking assumptions required for model fitting and hypothesis testing, and handling missing values and making
+            transformations of variables as needed. EDA encompasses IDA.
+            <BR>
+            <p align=right>
+                <a href='https://en.wikipedia.org/wiki/Exploratory_data_analysis' target="_blank">Wikipedia</a></span>
+            </p>
+        </p>
+    </div>
+    <!-- Page content -->
+    <BR>
+    <BR>
+    <h2>Preliminar Results</h2>
+    <div class="warpper">
+        <input class="radio" id="one" name="group" type="radio" checked>
+        <input class="radio" id="two" name="group" type="radio">
+        <input class="radio" id="three" name="group" type="radio">
+        <input class="radio" id="four" name="group" type="radio">
+        <input class="radio" id="five" name="group" type="radio">
+        <input class="radio" id="six" name="group" type="radio">
+        <div class="tabs">
+            <label class="tab" id="one-tab" for="one">Configuration</label>
+            <label class="tab" id="two-tab" for="two">Regression Analisys</label>
+            <label class="tab" id="three-tab" for="three">Unbalance Classes</label>
+            <label class="tab" id="four-tab" for="four">Correlation</label>
+            <label class="tab" id="five-tab" for="five">Multicollinearity</label>
+            <label class="tab" id="six-tab" for="six">Residual Analisys</label>
+        </div>
+        <div class="panels">
+            <div class="panel" id="one-panel">
+                <div class="panel-title">Data Set</div>
+                <table>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td><span style="color:Blue;">Shape </span> </td>
+                                    <td><span style="color:Red;">891 / 12</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span style="color:Blue;"> Classes </span> </td>
+                                    <td><span style="color:Green;">2</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span style="color:Blue;"> Classes Found</span> </td>
+                                    <td><span style="color:Green;">['Yes' 'No']</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span style="color:Blue;"> Duplicated </span> </td>
+                                    <td><span style="color:orange;">none</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span style="color:Blue;"> Excluded Features:</span> </td>
+                                    <td><span style="color:black;">        <table>            <thead>
+                <tr>
+            <th>Feature</th>
+            <th>Freq</th>
+                </tr>
+           </thead>
+            <tbody>
+<tr>
+      <td>PassengerId</td>
+      <td>1.0</td>
+</tr>
+<tr>
+      <td>Name</td>
+      <td>1.0</td>
+</tr>
+<tr>
+      <td>Ticket</td>
+      <td>0.7643097643097643</td>
+</tr>
+            </tbody>
+        </table>
+</span></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>         <table>            <thead>
+                <tr>
+            <th>column</th>
+            <th>dtype</th>
+            <th>not_null</th>
+            <th>percent</th>
+                </tr>
+           </thead>
+            <tbody>
+<tr>
+      <td>Survived</td>
+      <td>object</td>
+      <td>891</td>
+      <td>0.0</td>
+</tr>
+<tr>
+      <td>Pclass</td>
+      <td>int64</td>
+      <td>891</td>
+      <td>0.0</td>
+</tr>
+<tr>
+      <td>Sex</td>
+      <td>object</td>
+      <td>891</td>
+      <td>0.0</td>
+</tr>
+<tr>
+      <td>Age</td>
+      <td>float64</td>
+      <td>714</td>
+      <td>0.1987</td>
+</tr>
+<tr>
+      <td>SibSp</td>
+      <td>int64</td>
+      <td>891</td>
+      <td>0.0</td>
+</tr>
+<tr>
+      <td>Parch</td>
+      <td>int64</td>
+      <td>891</td>
+      <td>0.0</td>
+</tr>
+<tr>
+      <td>Fare</td>
+      <td>float64</td>
+      <td>891</td>
+      <td>0.0</td>
+</tr>
+<tr>
+      <td>Cabin</td>
+      <td>object</td>
+      <td>204</td>
+      <td>0.771</td>
+</tr>
+<tr>
+      <td>Embarked</td>
+      <td>object</td>
+      <td>889</td>
+      <td>0.0022</td>
+</tr>
+            </tbody>
+        </table>
+</td>
+                    </tr>
+                </table>
+                Several characteristics define a data set's structure and properties. These include the number and types of the attributes or variables, and various statistical measures applicable to them, such as standard deviation and kurtosis. The values may be numbers,
+                such as real numbers or integers, for example representing a person's height in centimeters, but may also be nominal data (i.e., not consisting of numerical values), for example representing a person's ethnicity. More generally, values
+                may be of any of the kinds described as a level of measurement. For each variable, the values are normally all of the same kind. However, there may also be missing values, which must be indicated in some way.
+                <BR>
+                <p align=right>
+                    <a href="https://en.wikipedia.org/wiki/Data_set" target="_blank">Wikipedia</a>
+                </p>
+
+            </div>
+            <div class="panel" id="two-panel">
+                <div class="panel-title">Regression Analisys</div>
+                <p><pre>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:               Survived   R-squared:                       0.384
+Model:                            OLS   Adj. R-squared:                  0.379
+Method:                 Least Squares   F-statistic:                     68.79
+Date:                Thu, 11 Mar 2021   Prob (F-statistic):           1.13e-87
+Time:                        15:18:42   Log-Likelihood:                -405.95
+No. Observations:                 891   AIC:                             829.9
+Df Residuals:                     882   BIC:                             873.0
+Df Model:                           8                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+Intercept      0.2053      0.107      1.920      0.055      -0.005       0.415
+Pclass         0.1532      0.023      6.681      0.000       0.108       0.198
+Sex            0.5159      0.028     18.109      0.000       0.460       0.572
+Age            0.0026      0.001      3.186      0.001       0.001       0.004
+SibSp          0.0379      0.013      2.866      0.004       0.012       0.064
+Parch          0.0072      0.018      0.394      0.694      -0.029       0.043
+Fare          -0.0004      0.000     -1.171      0.242      -0.001       0.000
+Cabin          0.0004      0.000      0.726      0.468      -0.001       0.001
+Embarked       0.0239      0.021      1.142      0.254      -0.017       0.065
+==============================================================================
+Omnibus:                       41.874   Durbin-Watson:                   1.893
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               46.798
+Skew:                          -0.559   Prob(JB):                     6.89e-11
+Kurtosis:                       3.104   Cond. No.                     1.21e+03
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 1.21e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.</pre></p>
+                <BR> In statistical modeling, regression analysis is a set of statistical processes for estimating the relationships between a dependent variable (often called the 'outcome variable') and one or more independent variables (often called 'predictors',
+                'covariates', or 'features'). The most common form of regression analysis is linear regression, in which one finds the line (or a more complex linear combination) that most closely fits the data according to a specific mathematical criterion.
+                <BR>
+                <p align=right><a href='https://en.wikipedia.org/wiki/Regression_analysis' target="_blank">Wikipedia</a></p>
+            </div>
+            <div class="panel" id="three-panel">
+                <div class="panel-title">Balance Classes</div>
+                <img src="images/img_unbalance.png" alt="Unbalance Classes">
+                <BR> The accuracy paradox is the paradoxical finding that accuracy is not a good metric for predictive models when classifying in predictive analytics. This is because a simple model may have a high level of accuracy but be too crude to be
+                useful. For example, if the incidence of category A is dominant, being found in 99% of cases, then predicting that every case is category A will have an accuracy of 99%. Precision and recall are better measures in such cases. The underlying
+                issue is that there is a class imbalance between the positive class and the negative class. Prior probabilities for these classes need to be accounted for in error analysis. Precision and recall help, but precision too can be biased by
+                very unbalanced class priors in the test sets.
+                <p align=right><a href='https://en.wikipedia.org/wiki/Accuracy_paradox' target="_blank">Wikipedia</a></p>
+            </div>
+            <div class="panel" id="four-panel">
+                <div class="panel-title">Correlation of the Features</div>
+                <img src="images/img_corr.png" alt="Correlation">
+                <BR> In statistics, correlation or dependence is any statistical relationship, whether causal or not, between two random variables or bivariate data. In the broadest sense correlation is any statistical association, though it commonly refers
+                to the degree to which a pair of variables are linearly related.
+                <p align=right><a href='https://en.wikipedia.org/wiki/Correlation_and_dependence' target="_blank">Wikipedia</a></p>
+            </div>
+
+            <div class="panel" id="five-panel">
+                <div class="panel-title">Detecting Multicollinearity with VIF</div>
+                <table>
+                    <tr>
+                        <td>
+                                    <table>            <thead>
+                <tr>
+            <th>cols</th>
+            <th>vif</th>
+            <th>significant</th>
+                </tr>
+           </thead>
+            <tbody>
+<tr>
+      <td>Pclass</td>
+      <td>17.546345941481334</td>
+      <td>high</td>
+</tr>
+<tr>
+      <td>Sex</td>
+      <td>12.95346933900461</td>
+      <td>high</td>
+</tr>
+<tr>
+      <td>Age</td>
+      <td>3.388657141368544</td>
+      <td>attention</td>
+</tr>
+<tr>
+      <td>SibSp</td>
+      <td>1.5728533399039148</td>
+      <td>moderate</td>
+</tr>
+<tr>
+      <td>Parch</td>
+      <td>1.6252025913066508</td>
+      <td>moderate</td>
+</tr>
+<tr>
+      <td>Fare</td>
+      <td>1.882729170931942</td>
+      <td>moderate</td>
+</tr>
+<tr>
+      <td>Cabin</td>
+      <td>25.246866985286243</td>
+      <td>high</td>
+</tr>
+<tr>
+      <td>Embarked</td>
+      <td>23.65012376853554</td>
+      <td>high</td>
+</tr>
+            </tbody>
+        </table>
+
+                        </td>
+                        <td>
+                            <select name="ref_rubrique" id="ref_rubrique">
+                                <option value="1" selected> Select a Feature </option>
+                                <option value="2"> Survived </option>n								<option value="3"> Pclass </option>n								<option value="4"> Sex </option>n								<option value="5"> Age </option>n								<option value="6"> SibSp </option>n								<option value="7"> Parch </option>n								<option value="8"> Fare </option>n								<option value="9"> Cabin </option>n								<option value="10"> Embarked </option>n								
+                            </select>
+                            <div id="ref_output"></div>
+                            <script type="text/javascript">
+                                var selectElement = document.getElementById('ref_rubrique');
+                                var divElement = document.getElementById('ref_output');
+
+                                selectElement.onchange = function() {
+                                        var selectedValue = selectElement.options[selectElement.selectedIndex].value;
+                                        if (selectedValue == '1') {
+                                            divElement.innerHTML = '<p><img src="images/blank.png"></p>'; 
+						
+										} else if (selectedValue == '2') {
+								divElement.innerHTML = '<table border="1" class="dataframe">  <thead>    <tr style="text-align: right;">      <th></th>      <th>Survived</th>    </tr>  </thead>  <tbody>    <tr>      <th>count</th>      <td>891</td>    </tr>    <tr>      <th>unique</th>      <td>2</td>    </tr>    <tr>      <th>top</th>      <td>No</td>    </tr>    <tr>      <th>freq</th>      <td>549</td>    </tr>  </tbody></table>';
+								
+										} else if (selectedValue == '3') {
+								divElement.innerHTML = '<table border="1" class="dataframe">  <thead>    <tr style="text-align: right;">      <th></th>      <th>Pclass</th>    </tr>  </thead>  <tbody>    <tr>      <th>count</th>      <td>891.000000</td>    </tr>    <tr>      <th>mean</th>      <td>2.308642</td>    </tr>    <tr>      <th>std</th>      <td>0.836071</td>    </tr>    <tr>      <th>min</th>      <td>1.000000</td>    </tr>    <tr>      <th>25%</th>      <td>2.000000</td>    </tr>    <tr>      <th>50%</th>      <td>3.000000</td>    </tr>    <tr>      <th>75%</th>      <td>3.000000</td>    </tr>    <tr>      <th>max</th>      <td>3.000000</td>    </tr>  </tbody></table>';
+								
+										} else if (selectedValue == '4') {
+								divElement.innerHTML = '<table border="1" class="dataframe">  <thead>    <tr style="text-align: right;">      <th></th>      <th>Sex</th>    </tr>  </thead>  <tbody>    <tr>      <th>count</th>      <td>891</td>    </tr>    <tr>      <th>unique</th>      <td>2</td>    </tr>    <tr>      <th>top</th>      <td>male</td>    </tr>    <tr>      <th>freq</th>      <td>577</td>    </tr>  </tbody></table>';
+								
+										} else if (selectedValue == '5') {
+								divElement.innerHTML = '<table border="1" class="dataframe">  <thead>    <tr style="text-align: right;">      <th></th>      <th>Age</th>    </tr>  </thead>  <tbody>    <tr>      <th>count</th>      <td>714.000000</td>    </tr>    <tr>      <th>mean</th>      <td>29.699118</td>    </tr>    <tr>      <th>std</th>      <td>14.526497</td>    </tr>    <tr>      <th>min</th>      <td>0.420000</td>    </tr>    <tr>      <th>25%</th>      <td>20.125000</td>    </tr>    <tr>      <th>50%</th>      <td>28.000000</td>    </tr>    <tr>      <th>75%</th>      <td>38.000000</td>    </tr>    <tr>      <th>max</th>      <td>80.000000</td>    </tr>  </tbody></table>';
+								
+										} else if (selectedValue == '6') {
+								divElement.innerHTML = '<table border="1" class="dataframe">  <thead>    <tr style="text-align: right;">      <th></th>      <th>SibSp</th>    </tr>  </thead>  <tbody>    <tr>      <th>count</th>      <td>891.000000</td>    </tr>    <tr>      <th>mean</th>      <td>0.523008</td>    </tr>    <tr>      <th>std</th>      <td>1.102743</td>    </tr>    <tr>      <th>min</th>      <td>0.000000</td>    </tr>    <tr>      <th>25%</th>      <td>0.000000</td>    </tr>    <tr>      <th>50%</th>      <td>0.000000</td>    </tr>    <tr>      <th>75%</th>      <td>1.000000</td>    </tr>    <tr>      <th>max</th>      <td>8.000000</td>    </tr>  </tbody></table>';
+								
+										} else if (selectedValue == '7') {
+								divElement.innerHTML = '<table border="1" class="dataframe">  <thead>    <tr style="text-align: right;">      <th></th>      <th>Parch</th>    </tr>  </thead>  <tbody>    <tr>      <th>count</th>      <td>891.000000</td>    </tr>    <tr>      <th>mean</th>      <td>0.381594</td>    </tr>    <tr>      <th>std</th>      <td>0.806057</td>    </tr>    <tr>      <th>min</th>      <td>0.000000</td>    </tr>    <tr>      <th>25%</th>      <td>0.000000</td>    </tr>    <tr>      <th>50%</th>      <td>0.000000</td>    </tr>    <tr>      <th>75%</th>      <td>0.000000</td>    </tr>    <tr>      <th>max</th>      <td>6.000000</td>    </tr>  </tbody></table>';
+								
+										} else if (selectedValue == '8') {
+								divElement.innerHTML = '<table border="1" class="dataframe">  <thead>    <tr style="text-align: right;">      <th></th>      <th>Fare</th>    </tr>  </thead>  <tbody>    <tr>      <th>count</th>      <td>891.000000</td>    </tr>    <tr>      <th>mean</th>      <td>32.204208</td>    </tr>    <tr>      <th>std</th>      <td>49.693429</td>    </tr>    <tr>      <th>min</th>      <td>0.000000</td>    </tr>    <tr>      <th>25%</th>      <td>7.910400</td>    </tr>    <tr>      <th>50%</th>      <td>14.454200</td>    </tr>    <tr>      <th>75%</th>      <td>31.000000</td>    </tr>    <tr>      <th>max</th>      <td>512.329200</td>    </tr>  </tbody></table>';
+								
+										} else if (selectedValue == '9') {
+								divElement.innerHTML = '<table border="1" class="dataframe">  <thead>    <tr style="text-align: right;">      <th></th>      <th>Cabin</th>    </tr>  </thead>  <tbody>    <tr>      <th>count</th>      <td>204</td>    </tr>    <tr>      <th>unique</th>      <td>147</td>    </tr>    <tr>      <th>top</th>      <td>C23 C25 C27</td>    </tr>    <tr>      <th>freq</th>      <td>4</td>    </tr>  </tbody></table>';
+								
+										} else if (selectedValue == '10') {
+								divElement.innerHTML = '<table border="1" class="dataframe">  <thead>    <tr style="text-align: right;">      <th></th>      <th>Embarked</th>    </tr>  </thead>  <tbody>    <tr>      <th>count</th>      <td>889</td>    </tr>    <tr>      <th>unique</th>      <td>3</td>    </tr>    <tr>      <th>top</th>      <td>S</td>    </tr>    <tr>      <th>freq</th>      <td>644</td>    </tr>  </tbody></table>';
+								
+								};
+                                        };
+                            </script>
+
+                        </td>
+                    </tr>
+                </table>
+                In statistics, multicollinearity (also collinearity) is a phenomenon in which one predictor variable in a multiple regression model can be linearly predicted from the others with a substantial degree of accuracy. In this situation, the coefficient estimates
+                of the multiple regression may change erratically in response to small changes in the model or the data. Multicollinearity does not reduce the predictive power or reliability of the model as a whole, at least within the sample data set;
+                it only affects calculations regarding individual predictors. That is, a multivariate regression model with collinear predictors can indicate how well the entire bundle of predictors predicts the outcome variable, but it may not give valid
+                results about any individual predictor, or about which predictors are redundant with respect to others.
+                <p align=right><a href='https://en.wikipedia.org/wiki/Multicollinearity' target="_blank">Wikipedia</a></p>
+
+            </div>
+            <div class="panel" id="six-panel">
+                <div class="panel-title">Residual Analysis</div>
+                <img src="images/img_residual1.png" alt="qqplot">
+                <img src="images/img_residual2.png" alt="hist">
+                <BR> In statistics and optimization, errors and residuals are two closely related and easily confused measures of the deviation of an observed value of an element of a statistical sample from its "theoretical value". The error (or disturbance)
+                of an observed value is the deviation of the observed value from the (unobservable) true value of a quantity of interest, and the residual of an observed value is the difference between the observed value and the estimated value of the
+                quantity of interest.
+                <p align=right><a href='https://en.wikipedia.org/wiki/Errors_and_residuals' target="_blank">Wikipedia</a></p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- AML Section -->
+    <div class="amlr-container amlr-padding-32" id="GRID">
+        <h3 class="amlr-border-bottom amlr-border-light-grey amlr-padding-16">Grid - Hyperparameter optimization</h3>
+        <p>In machine learning, hyperparameter optimization or tuning is the problem of choosing a set of optimal hyperparameters for a learning algorithm. A hyperparameter is a parameter whose value is used to control the learning process. By contrast,
+            the values of other parameters (typically node weights) are learned.
+            <p align=right><a href='https://en.wikipedia.org/wiki/Hyperparameter_optimization' target="_blank">Wikipedia</a></p>
+        </p>
+    </div>
+    <p>
+        AutoML - Results The models are classified by a standard metric based on the type of problem (the second column of the scoreboard). In binary classification problems, this metric is AUC, and in classification problems in several classes, the metric is
+        the average error per class. In regression problems, the standard classification metric is deviation.</p>
+            <table>            <thead>
+                <tr>
+            <th>model_id</th>
+            <th>auc</th>
+            <th>logloss</th>
+            <th>aucpr</th>
+            <th>mean_per_class_error</th>
+            <th>training_time_ms</th>
+                </tr>
+           </thead>
+            <tbody>
+<tr>
+      <td>StackedEnsemble_AllModels_AutoML_20210311_151855</td>
+      <td>0.8471903913080384</td>
+      <td>0.4528102403469806</td>
+      <td>0.867877737955077</td>
+      <td>0.2168958492487904</td>
+      <td>325</td>
+</tr>
+<tr>
+      <td>StackedEnsemble_BestOfFamily_AutoML_20210311_151855</td>
+      <td>0.8424051438757322</td>
+      <td>0.4578978512561904</td>
+      <td>0.8581108894390717</td>
+      <td>0.228652066887361</td>
+      <td>332</td>
+</tr>
+<tr>
+      <td>GLM_1_AutoML_20210311_151855</td>
+      <td>0.8337842712842712</td>
+      <td>0.463649888143717</td>
+      <td>0.866637860092156</td>
+      <td>0.2496180290297937</td>
+      <td>319</td>
+</tr>
+<tr>
+      <td>XGBoost_1_AutoML_20210311_151855</td>
+      <td>0.8302616501145913</td>
+      <td>0.4921577409260086</td>
+      <td>0.8457695219569761</td>
+      <td>0.2483872336813513</td>
+      <td>73</td>
+</tr>
+<tr>
+      <td>XGBoost_grid__1_AutoML_20210311_151855_model_1</td>
+      <td>0.8278796367031661</td>
+      <td>0.4945932181325772</td>
+      <td>0.8697464484177908</td>
+      <td>0.2379042526101349</td>
+      <td>1369</td>
+</tr>
+<tr>
+      <td>DRF_1_AutoML_20210311_151855</td>
+      <td>0.8180385790679908</td>
+      <td>1.7043086132289325</td>
+      <td>0.8475235369269526</td>
+      <td>0.2328643578643578</td>
+      <td>62</td>
+</tr>
+<tr>
+      <td>XGBoost_3_AutoML_20210311_151855</td>
+      <td>0.8045581869111281</td>
+      <td>0.5803563317508167</td>
+      <td>0.8259034380112504</td>
+      <td>0.2475914608267549</td>
+      <td>34</td>
+</tr>
+<tr>
+      <td>XRT_1_AutoML_20210311_151855</td>
+      <td>0.7966959511077158</td>
+      <td>1.1407842354336293</td>
+      <td>0.8450380823474563</td>
+      <td>0.2921229097699686</td>
+      <td>39</td>
+</tr>
+<tr>
+      <td>XGBoost_2_AutoML_20210311_151855</td>
+      <td>0.7798308717426365</td>
+      <td>0.6226193710964427</td>
+      <td>0.8329810216409114</td>
+      <td>0.266934046345811</td>
+      <td>154</td>
+</tr>
+<tr>
+      <td>DeepLearning_1_AutoML_20210311_151855</td>
+      <td>0.7623875307698837</td>
+      <td>0.621580484141115</td>
+      <td>0.7990635126614174</td>
+      <td>0.2753904592139886</td>
+      <td>56</td>
+</tr>
+            </tbody>
+        </table>
+
+
+    <p><strong>Partial dependence plot (PDP)</strong> gives a graphical depiction of the marginal effect of a variable on the response. The effect of a variable is measured in change in the mean response. PDP assumes independence between the feature for
+        which is the PDP computed and the rest.</p>
+
+    <p><strong>An Individual Conditional Expectation (ICE) plot </strong>gives a graphical depiction of the marginal effect of a variable on the response. ICE plots are similar to partial dependence plots (PDP); PDP shows the average effect of a feature
+        while ICE plot shows the effect for a single instance. This function will plot the effect for each decile. In contrast to the PDP, ICE plots can provide more insight, especially when there is stronger feature interaction.</p>
+	<div style="overflow-x:auto;">
+    		<table>
+        		<tr>
+            		<td>
+                    		<h4>Variable Importance by Model</h4>
+                    		<img src="images/img_var_imp_model.png" alt="Variable Importance Model">
+            		</td>
+            		<td>
+                    		<h4><strong>AML</strong> - Partial Dependence</h4>
+                    		<select name="aml_pd" id="aml_pd">
+                            		<option value="100" selected> Select a Feature </option>
+                    				<option value="101"> Survived </option>n								<option value="102"> Pclass </option>n								<option value="103"> Sex </option>n								<option value="104"> Age </option>n								<option value="105"> SibSp </option>n								<option value="106"> Parch </option>n								<option value="107"> Fare </option>n								<option value="108"> Cabin </option>n								<option value="109"> Embarked </option>n								
+                    		</select>
+                    		<div id="aml_pd_output"></div>
+                    		<script type="text/javascript">
+                        		var selectElement2 = document.getElementById('aml_pd');
+                        		var divElement2 = document.getElementById('aml_pd_output');
+		
+                        		selectElement2.onchange = function() {
+                                		var selectedValue2 = selectElement2.options[selectElement2.selectedIndex].value;
+                                		if (selectedValue2 == '100') {
+                                    		divElement2.innerHTML = '<p><img src="images/img_blank.png"></p>'; 
+							
+										} else if (selectedValue2 == '101'){
+								divElement2.innerHTML = '<img src="images/img_aml_pd_101.png">';
+								
+										} else if (selectedValue2 == '102'){
+								divElement2.innerHTML = '<img src="images/img_aml_pd_102.png">';
+								
+										} else if (selectedValue2 == '103'){
+								divElement2.innerHTML = '<img src="images/img_aml_pd_103.png">';
+								
+										} else if (selectedValue2 == '104'){
+								divElement2.innerHTML = '<img src="images/img_aml_pd_104.png">';
+								
+										} else if (selectedValue2 == '105'){
+								divElement2.innerHTML = '<img src="images/img_aml_pd_105.png">';
+								
+										} else if (selectedValue2 == '106'){
+								divElement2.innerHTML = '<img src="images/img_aml_pd_106.png">';
+								
+										} else if (selectedValue2 == '107'){
+								divElement2.innerHTML = '<img src="images/img_aml_pd_107.png">';
+								
+										} else if (selectedValue2 == '108'){
+								divElement2.innerHTML = '<img src="images/img_aml_pd_108.png">';
+								
+										} else if (selectedValue2 == '109'){
+								divElement2.innerHTML = '<img src="images/img_aml_pd_109.png">';
+								
+								};
+                                		};
+                    		</script>
+			</tr>
+			<tr>
+	    		</td>
+		    		<td>
+                	    		<h4><strong>Ensemble </strong>- (ICE) Individual Condition Expectation</h4>
+                    		<select name="ice_pd" id="ice_pd">
+                            		<option value="200" selected> Select a Feature </option>
+                    				<option value="201"> Survived </option>n								<option value="202"> Pclass </option>n								<option value="203"> Sex </option>n								<option value="204"> Age </option>n								<option value="205"> SibSp </option>n								<option value="206"> Parch </option>n								<option value="207"> Fare </option>n								<option value="208"> Cabin </option>n								<option value="209"> Embarked </option>n								
+                    		</select>
+                    		<div id="ice_pd_output"></div>
+                    		<script type="text/javascript">
+                        		var selectElement3 = document.getElementById('ice_pd');
+                        		var divElement3 = document.getElementById('ice_pd_output');
+		
+                        		selectElement3.onchange = function() {
+                                		var selectedValue3 = selectElement3.options[selectElement3.selectedIndex].value;
+                                		if (selectedValue3 == '200') {
+                                    		divElement3.innerHTML = '<p><img src="images/img_blank.png"></p>'; 
+							
+										} else if (selectedValue3 == '201'){
+								divElement3.innerHTML = '<img src="images/img_ice_pd_201.png">';
+								
+										} else if (selectedValue3 == '202'){
+								divElement3.innerHTML = '<img src="images/img_ice_pd_202.png">';
+								
+										} else if (selectedValue3 == '203'){
+								divElement3.innerHTML = '<img src="images/img_ice_pd_203.png">';
+								
+										} else if (selectedValue3 == '204'){
+								divElement3.innerHTML = '<img src="images/img_ice_pd_204.png">';
+								
+										} else if (selectedValue3 == '205'){
+								divElement3.innerHTML = '<img src="images/img_ice_pd_205.png">';
+								
+										} else if (selectedValue3 == '206'){
+								divElement3.innerHTML = '<img src="images/img_ice_pd_206.png">';
+								
+										} else if (selectedValue3 == '207'){
+								divElement3.innerHTML = '<img src="images/img_ice_pd_207.png">';
+								
+										} else if (selectedValue3 == '208'){
+								divElement3.innerHTML = '<img src="images/img_ice_pd_208.png">';
+								
+										} else if (selectedValue3 == '209'){
+								divElement3.innerHTML = '<img src="images/img_ice_pd_209.png">';
+								
+								};
+                                		};
+                    		</script>
+                   		</td>
+				<td>
+					<h4>Correlation Heatmap by Model</h4>
+				                <img src="images/img_aml_correlation_models.png" alt="AML Correlation Model">
+				</td>
+        		</tr>
+    		</table>
+	</div>
+
+    <!-- Model Performance Section -->
+    <div class="amlr-container amlr-padding-32" id="MP">
+        <h3 class="amlr-border-bottom amlr-border-light-grey amlr-padding-16">Model Performance</h3>
+        <h4>Analytical Performance Modeling</h4>
+        Analytical Performance Modeling is a method to model the behaviour of a system in a spreadsheet. It is used in Software performance testing. It allows evaluation of design options and system sizing based on actual or anticipated business usage. It is
+        therefore much faster and cheaper than performance testing, though it requires thorough understanding of the hardware platforms
+        <p align=right><a href='https://en.wikipedia.org/wiki/Analytical_Performance_Modeling' target="_blank">Wikipedia</a></p>
+    </div>
+	<hr>
+    <!-- Model Performance -->
+    <div class="amlr-container" align=center style="overflow-x:auto;">
+        <h4>Comparative Metrics Table</h4>
+		        <table>            <thead>
+                <tr>
+            <th>Algo</th>
+            <th>Overall ACC</th>
+            <th>Kappa</th>
+            <th>Overall RACC</th>
+            <th>SOA1(Landis & Koch)</th>
+            <th>SOA2(Fleiss)</th>
+            <th>SOA3(Altman)</th>
+            <th>SOA4(Cicchetti)</th>
+            <th>SOA5(Cramer)</th>
+            <th>SOA6(Matthews)</th>
+            <th>TNR Macro</th>
+            <th>TPR Macro</th>
+            <th>FPR Macro</th>
+            <th>FNR Macro</th>
+            <th>PPV Macro</th>
+            <th>ACC Macro</th>
+            <th>F1 Macro</th>
+            <th>TNR Micro</th>
+            <th>FPR Micro</th>
+            <th>TPR Micro</th>
+            <th>FNR Micro</th>
+            <th>PPV Micro</th>
+            <th>F1 Micro</th>
+            <th>Scott PI</th>
+            <th>Gwet AC1</th>
+            <th>Bennett S</th>
+            <th>Kappa Standard Error</th>
+            <th>Kappa 95% CI</th>
+            <th>Chi-Squared</th>
+            <th>Phi-Squared</th>
+            <th>Cramer V</th>
+            <th>Chi-Squared DF</th>
+            <th>95% CI</th>
+            <th>Standard Error</th>
+            <th>Response Entropy</th>
+            <th>Reference Entropy</th>
+            <th>Cross Entropy</th>
+            <th>Joint Entropy</th>
+            <th>Conditional Entropy</th>
+            <th>KL Divergence</th>
+            <th>Lambda B</th>
+            <th>Lambda A</th>
+            <th>Kappa Unbiased</th>
+            <th>Overall RACCU</th>
+            <th>Kappa No Prevalence</th>
+            <th>Mutual Information</th>
+            <th>Overall J</th>
+            <th>Hamming Loss</th>
+            <th>Zero-one Loss</th>
+            <th>NIR</th>
+            <th>P-Value</th>
+            <th>Overall CEN</th>
+            <th>Overall MCEN</th>
+            <th>Overall MCC</th>
+            <th>RR</th>
+            <th>CBA</th>
+            <th>AUNU</th>
+            <th>AUNP</th>
+            <th>RCI</th>
+            <th>Pearson C</th>
+            <th>CSI</th>
+            <th>ARI</th>
+            <th>Bangdiwala B</th>
+            <th>Krippendorff Alpha</th>
+                </tr>
+           </thead>
+            <tbody>
+<tr>
+      <td>GLM</td>
+      <td>0.8</td>
+      <td>0.5401</td>
+      <td>0.5651</td>
+      <td>Moderate</td>
+      <td>Intermediate to Good</td>
+      <td>Moderate</td>
+      <td>Fair</td>
+      <td>Strong</td>
+      <td>Moderate</td>
+      <td>0.746</td>
+      <td>0.746</td>
+      <td>0.254</td>
+      <td>0.254</td>
+      <td>0.876</td>
+      <td>0.8</td>
+      <td>0.759</td>
+      <td>0.8</td>
+      <td>0.2</td>
+      <td>0.8</td>
+      <td>0.2</td>
+      <td>0.8</td>
+      <td>0.8</td>
+      <td>0.518</td>
+      <td>0.6582</td>
+      <td>0.6</td>
+      <td>0.0727</td>
+      <td>0.6827</td>
+      <td>59.2002</td>
+      <td>0.37</td>
+      <td>0.6083</td>
+      <td>1.0</td>
+      <td>0.862</td>
+      <td>0.0316</td>
+      <td>0.7093</td>
+      <td>0.9672</td>
+      <td>1.1207</td>
+      <td>1.3609</td>
+      <td>0.3937</td>
+      <td>0.1535</td>
+      <td>0.0</td>
+      <td>0.4921</td>
+      <td>0.518</td>
+      <td>0.5851</td>
+      <td>0.6</td>
+      <td>0.3156</td>
+      <td>0.622</td>
+      <td>0.2</td>
+      <td>32.0</td>
+      <td>0.6062</td>
+      <td>0.0</td>
+      <td>0.4375</td>
+      <td>0.2989</td>
+      <td>0.6083</td>
+      <td>80.0</td>
+      <td>0.622</td>
+      <td>0.746</td>
+      <td>0.746</td>
+      <td>0.3263</td>
+      <td>0.5197</td>
+      <td>0.622</td>
+      <td>0.3465</td>
+      <td>0.7169</td>
+      <td>0.5195</td>
+</tr>
+<tr>
+      <td>Random Forest</td>
+      <td>0.8062</td>
+      <td>0.5908</td>
+      <td>0.5266</td>
+      <td>Moderate</td>
+      <td>Intermediate to Good</td>
+      <td>Moderate</td>
+      <td>Good</td>
+      <td>Relatively Strong</td>
+      <td>Moderate</td>
+      <td>0.7929</td>
+      <td>0.7929</td>
+      <td>0.2071</td>
+      <td>0.2071</td>
+      <td>0.7983</td>
+      <td>0.8062</td>
+      <td>0.7953</td>
+      <td>0.8062</td>
+      <td>0.1937</td>
+      <td>0.8062</td>
+      <td>0.1937</td>
+      <td>0.8062</td>
+      <td>0.8062</td>
+      <td>0.5906</td>
+      <td>0.6322</td>
+      <td>0.6125</td>
+      <td>0.066</td>
+      <td>0.7201</td>
+      <td>55.9271</td>
+      <td>0.3495</td>
+      <td>0.5912</td>
+      <td>1.0</td>
+      <td>0.8675</td>
+      <td>0.0312</td>
+      <td>0.9544</td>
+      <td>0.9672</td>
+      <td>0.9683</td>
+      <td>1.6594</td>
+      <td>0.6922</td>
+      <td>0.0011</td>
+      <td>0.4833</td>
+      <td>0.5079</td>
+      <td>0.5906</td>
+      <td>0.5267</td>
+      <td>0.6125</td>
+      <td>0.2622</td>
+      <td>0.6627</td>
+      <td>0.1938</td>
+      <td>31.0</td>
+      <td>0.6062</td>
+      <td>0.0</td>
+      <td>0.6435</td>
+      <td>0.5016</td>
+      <td>0.5912</td>
+      <td>80.0</td>
+      <td>0.7801</td>
+      <td>0.7929</td>
+      <td>0.7929</td>
+      <td>0.2711</td>
+      <td>0.5089</td>
+      <td>0.5912</td>
+      <td>0.3698</td>
+      <td>0.668</td>
+      <td>0.5919</td>
+</tr>
+<tr>
+      <td>GBM</td>
+      <td>0.8438</td>
+      <td>0.6624</td>
+      <td>0.5372</td>
+      <td>Substantial</td>
+      <td>Intermediate to Good</td>
+      <td>Good</td>
+      <td>Good</td>
+      <td>Strong</td>
+      <td>Moderate</td>
+      <td>0.8211</td>
+      <td>0.8211</td>
+      <td>0.1789</td>
+      <td>0.1789</td>
+      <td>0.8494</td>
+      <td>0.8438</td>
+      <td>0.8303</td>
+      <td>0.8438</td>
+      <td>0.1562</td>
+      <td>0.8438</td>
+      <td>0.1562</td>
+      <td>0.8438</td>
+      <td>0.8438</td>
+      <td>0.6607</td>
+      <td>0.7104</td>
+      <td>0.6875</td>
+      <td>0.062</td>
+      <td>0.784</td>
+      <td>71.7858</td>
+      <td>0.4487</td>
+      <td>0.6698</td>
+      <td>1.0</td>
+      <td>0.9</td>
+      <td>0.0287</td>
+      <td>0.9097</td>
+      <td>0.9672</td>
+      <td>0.9822</td>
+      <td>1.5337</td>
+      <td>0.5666</td>
+      <td>0.0151</td>
+      <td>0.5192</td>
+      <td>0.6032</td>
+      <td>0.6607</td>
+      <td>0.5396</td>
+      <td>0.6875</td>
+      <td>0.3432</td>
+      <td>0.7127</td>
+      <td>0.1562</td>
+      <td>25.0</td>
+      <td>0.6062</td>
+      <td>0.0</td>
+      <td>0.5428</td>
+      <td>0.4217</td>
+      <td>0.6698</td>
+      <td>80.0</td>
+      <td>0.7738</td>
+      <td>0.8211</td>
+      <td>0.8211</td>
+      <td>0.3548</td>
+      <td>0.5565</td>
+      <td>0.6704</td>
+      <td>0.4669</td>
+      <td>0.7363</td>
+      <td>0.6617</td>
+</tr>
+<tr>
+      <td>xGBoost</td>
+      <td>0.8688</td>
+      <td>0.7164</td>
+      <td>0.5372</td>
+      <td>Substantial</td>
+      <td>Intermediate to Good</td>
+      <td>Good</td>
+      <td>Good</td>
+      <td>Strong</td>
+      <td>Strong</td>
+      <td>0.8472</td>
+      <td>0.8472</td>
+      <td>0.1528</td>
+      <td>0.1528</td>
+      <td>0.8778</td>
+      <td>0.8688</td>
+      <td>0.8575</td>
+      <td>0.8688</td>
+      <td>0.1312</td>
+      <td>0.8688</td>
+      <td>0.1312</td>
+      <td>0.8688</td>
+      <td>0.8688</td>
+      <td>0.715</td>
+      <td>0.7567</td>
+      <td>0.7375</td>
+      <td>0.0577</td>
+      <td>0.8295</td>
+      <td>83.9714</td>
+      <td>0.5248</td>
+      <td>0.7244</td>
+      <td>1.0</td>
+      <td>0.9211</td>
+      <td>0.0267</td>
+      <td>0.9097</td>
+      <td>0.9672</td>
+      <td>0.9822</td>
+      <td>1.4667</td>
+      <td>0.4995</td>
+      <td>0.0151</td>
+      <td>0.5962</td>
+      <td>0.6667</td>
+      <td>0.715</td>
+      <td>0.5396</td>
+      <td>0.7375</td>
+      <td>0.4103</td>
+      <td>0.7527</td>
+      <td>0.1312</td>
+      <td>21.0</td>
+      <td>0.6062</td>
+      <td>0.0</td>
+      <td>0.4806</td>
+      <td>0.3745</td>
+      <td>0.7244</td>
+      <td>80.0</td>
+      <td>0.7989</td>
+      <td>0.8472</td>
+      <td>0.8472</td>
+      <td>0.4242</td>
+      <td>0.5867</td>
+      <td>0.7251</td>
+      <td>0.5389</td>
+      <td>0.7761</td>
+      <td>0.7158</td>
+</tr>
+<tr>
+      <td>Deep Learning</td>
+      <td>0.6938</td>
+      <td>0.3742</td>
+      <td>0.5106</td>
+      <td>Fair</td>
+      <td>Poor</td>
+      <td>Fair</td>
+      <td>Poor</td>
+      <td>Moderate</td>
+      <td>Weak</td>
+      <td>0.6918</td>
+      <td>0.6918</td>
+      <td>0.3082</td>
+      <td>0.3082</td>
+      <td>0.685</td>
+      <td>0.6938</td>
+      <td>0.6861</td>
+      <td>0.6938</td>
+      <td>0.3062</td>
+      <td>0.6938</td>
+      <td>0.3062</td>
+      <td>0.6938</td>
+      <td>0.6938</td>
+      <td>0.3722</td>
+      <td>0.4021</td>
+      <td>0.3875</td>
+      <td>0.0745</td>
+      <td>0.5201</td>
+      <td>22.7043</td>
+      <td>0.1419</td>
+      <td>0.3767</td>
+      <td>1.0</td>
+      <td>0.7652</td>
+      <td>0.0364</td>
+      <td>0.9928</td>
+      <td>0.9672</td>
+      <td>0.9765</td>
+      <td>1.8557</td>
+      <td>0.8885</td>
+      <td>0.0093</td>
+      <td>0.3194</td>
+      <td>0.2222</td>
+      <td>0.3722</td>
+      <td>0.5122</td>
+      <td>0.3875</td>
+      <td>0.1043</td>
+      <td>0.5243</td>
+      <td>0.3062</td>
+      <td>49.0</td>
+      <td>0.6062</td>
+      <td>0.0135</td>
+      <td>0.8161</td>
+      <td>0.6302</td>
+      <td>0.3767</td>
+      <td>80.0</td>
+      <td>0.6491</td>
+      <td>0.6918</td>
+      <td>0.6918</td>
+      <td>0.1078</td>
+      <td>0.3525</td>
+      <td>0.3768</td>
+      <td>0.1447</td>
+      <td>0.4952</td>
+      <td>0.3741</td>
+</tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div>
+        <h4>The Best Algorithms</h4>
+		        <table>            <thead>
+                <tr>
+            <th>Description</th>
+            <th>RF</th>
+            <th>GLM</th>
+            <th>GBM</th>
+            <th>XGB</th>
+            <th>DL</th>
+                </tr>
+           </thead>
+            <tbody>
+<tr>
+      <td>overall</td>
+      <td>3.95</td>
+      <td>3.86667</td>
+      <td>4.48333</td>
+      <td>4.68333</td>
+      <td>2.38333</td>
+</tr>
+<tr>
+      <td>class</td>
+      <td>4.15</td>
+      <td>4.15</td>
+      <td>4.55</td>
+      <td>5.2</td>
+      <td>3.1</td>
+</tr>
+            </tbody>
+        </table>
+
+		<p><span style="color:Blue;">The best name:</span><span style="color:Red;"> XGB </span></p>
+    </div>
+    <hr>
+	<div style="overflow-x:auto;" align="center">	
+		<table>
+			<tr>
+        		<h5>Gradient Linear Estimator</h5>
+				<td>
+					<h6>Confusion Matrix</h6>
+					        <table>            <thead>
+                <tr>
+            <th>Description</th>
+            <th>precision</th>
+            <th>recall</th>
+            <th>f1-score</th>
+            <th>support</th>
+                </tr>
+           </thead>
+            <tbody>
+<tr>
+      <td>Yes</td>
+      <td>1.0</td>
+      <td>0.4921</td>
+      <td>0.6596</td>
+      <td>63.0</td>
+</tr>
+<tr>
+      <td>No</td>
+      <td>0.7519</td>
+      <td>1.0</td>
+      <td>0.8584</td>
+      <td>97.0</td>
+</tr>
+<tr>
+      <td>accuracy</td>
+      <td>0.8</td>
+      <td>0.8</td>
+      <td>0.8</td>
+      <td>0.8</td>
+</tr>
+<tr>
+      <td>macro avg</td>
+      <td>0.876</td>
+      <td>0.746</td>
+      <td>0.759</td>
+      <td>160.0</td>
+</tr>
+<tr>
+      <td>weighted avg</td>
+      <td>0.8496</td>
+      <td>0.8</td>
+      <td>0.7801</td>
+      <td>160.0</td>
+</tr>
+            </tbody>
+        </table>
+
+				</td>
+				<td>
+					<h6>Feature Importance</h6>
+					<img src="images/img_fi_glm.png" alt="Feature Importance">
+				</td>
+			</tr>
+		</table>
+    <hr>
+		<table>
+			<tr>
+        		<h5>Dynamic Random Forest</h5>
+				<td>
+					<h6>Confusion Matrix</h6>
+					        <table>            <thead>
+                <tr>
+            <th>Description</th>
+            <th>precision</th>
+            <th>recall</th>
+            <th>f1-score</th>
+            <th>support</th>
+                </tr>
+           </thead>
+            <tbody>
+<tr>
+      <td>Yes</td>
+      <td>0.7667</td>
+      <td>0.7302</td>
+      <td>0.748</td>
+      <td>63.0</td>
+</tr>
+<tr>
+      <td>No</td>
+      <td>0.83</td>
+      <td>0.8557</td>
+      <td>0.8426</td>
+      <td>97.0</td>
+</tr>
+<tr>
+      <td>accuracy</td>
+      <td>0.8062</td>
+      <td>0.8062</td>
+      <td>0.8062</td>
+      <td>0.8062</td>
+</tr>
+<tr>
+      <td>macro avg</td>
+      <td>0.7983</td>
+      <td>0.7929</td>
+      <td>0.7953</td>
+      <td>160.0</td>
+</tr>
+<tr>
+      <td>weighted avg</td>
+      <td>0.8051</td>
+      <td>0.8062</td>
+      <td>0.8054</td>
+      <td>160.0</td>
+</tr>
+            </tbody>
+        </table>
+
+				</td>
+				<td>
+					<h6>Feature Importance</h6>
+					<img src="images/img_fi_rf.png" alt="Feature Importance">
+				</td>
+			</tr>
+		</table>
+    <hr>
+		<table>
+			<tr>
+        		<h5>Gradient Boost Machine</h5>
+				<td>
+					<h6>Confusion Matrix</h6>
+					        <table>            <thead>
+                <tr>
+            <th>Description</th>
+            <th>precision</th>
+            <th>recall</th>
+            <th>f1-score</th>
+            <th>support</th>
+                </tr>
+           </thead>
+            <tbody>
+<tr>
+      <td>Yes</td>
+      <td>0.8654</td>
+      <td>0.7143</td>
+      <td>0.7826</td>
+      <td>63.0</td>
+</tr>
+<tr>
+      <td>No</td>
+      <td>0.8333</td>
+      <td>0.9278</td>
+      <td>0.878</td>
+      <td>97.0</td>
+</tr>
+<tr>
+      <td>accuracy</td>
+      <td>0.8438</td>
+      <td>0.8438</td>
+      <td>0.8438</td>
+      <td>0.8438</td>
+</tr>
+<tr>
+      <td>macro avg</td>
+      <td>0.8494</td>
+      <td>0.8211</td>
+      <td>0.8303</td>
+      <td>160.0</td>
+</tr>
+<tr>
+      <td>weighted avg</td>
+      <td>0.846</td>
+      <td>0.8438</td>
+      <td>0.8405</td>
+      <td>160.0</td>
+</tr>
+            </tbody>
+        </table>
+
+				</td>
+				<td>
+					<h6>Feature Importance</h6>
+					<img src="images/img_fi_gbm.png" alt="Feature Importance">
+				</td>
+			</tr>
+		</table>
+    <hr>
+		<table>
+			<tr>
+        		<h5>XGBoost</h5>
+				<td>
+					<h6>Confusion Matrix</h6>
+					{{fc_xgb}}
+				</td>
+				<td>
+					<h6>Feature Importance</h6>
+					<img src="images/img_fi_xgb.png" alt="Feature Importance">
+				</td>
+			</tr>
+		</table>
+    <hr>
+		<table>
+			<tr>
+        		<h5>Deep Learning</h5>
+				<td>
+					<h6>Confusion Matrix</h6>
+					        <table>            <thead>
+                <tr>
+            <th>Description</th>
+            <th>precision</th>
+            <th>recall</th>
+            <th>f1-score</th>
+            <th>support</th>
+                </tr>
+           </thead>
+            <tbody>
+<tr>
+      <td>Yes</td>
+      <td>0.5972</td>
+      <td>0.6825</td>
+      <td>0.637</td>
+      <td>63.0</td>
+</tr>
+<tr>
+      <td>No</td>
+      <td>0.7727</td>
+      <td>0.701</td>
+      <td>0.7351</td>
+      <td>97.0</td>
+</tr>
+<tr>
+      <td>accuracy</td>
+      <td>0.6938</td>
+      <td>0.6938</td>
+      <td>0.6938</td>
+      <td>0.6938</td>
+</tr>
+<tr>
+      <td>macro avg</td>
+      <td>0.685</td>
+      <td>0.6918</td>
+      <td>0.6861</td>
+      <td>160.0</td>
+</tr>
+<tr>
+      <td>weighted avg</td>
+      <td>0.7036</td>
+      <td>0.6938</td>
+      <td>0.6965</td>
+      <td>160.0</td>
+</tr>
+            </tbody>
+        </table>
+
+				</td>
+				<td>
+					<h6>Feature Importance</h6>
+					<img src="images/img_fi_dl.png" alt="Feature Importance">
+				</td>
+			</tr>
+		</table>
+	</div>
+
+    <hr>
+    <!-- Footer -->
+    <footer class="amlr-center amlr-black amlr-padding-16">
+        <p>Powered by <a href="https://www.thescientist.com.br" title="amlr.CSS" target="_blank" class="amlr-hover-text-green">The Scientist</a></p>
+    </footer>
+
+</body>
+
+</html>

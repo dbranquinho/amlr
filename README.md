@@ -102,10 +102,9 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
     - Feature Importance for all models
 
 
-<BR><BR>
 <hr>
 
-## Install
+## How to Install
 
 ```shell
 sudo alt-get install default-jre
@@ -114,7 +113,7 @@ pip install amlr
 
 <BR>
 <hr>
-<BR><BR>
+<BR>
 
 ## How to use
 
@@ -129,6 +128,7 @@ rp.create_report(dataset='data/titanic-passengers.csv', target='Survived')
 webbrowser.open('report/index.html')
 ```
 
-
+<hr>
+<BR>
 
 `enjoi!`
