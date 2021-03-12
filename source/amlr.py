@@ -624,6 +624,20 @@ class report:
         table_cp = self.w_table(data=cp, border=0, align='left', 
                                     collapse='collapse', color='black', 
                                     foot=False)        
+        if str(cp_best_name) == 'None':
+            cp_best_name = 'Confusion matrices are too close and the best one can not be recognized.'
+            i = 0
+            list_max = list()
+            for column in cp.columns:
+                if i > 0:
+                    if cp[column][0] >= max_v:
+                        list_max.append(column)
+                i = i + 1
+            self.insert_text("the_best_name", "Winners: " + ' - '.join(list_max) + '<br>' + cp_best_name)
+
+        else:
+            self.insert_text("the_best_name", str(cp_best_name))
+        
         self.insert_text("best_algorithms", str(table_cp))
         self.insert_text("the_best_name", str(cp_best_name))
         

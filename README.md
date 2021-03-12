@@ -4,7 +4,7 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
 
 <hr>
 
-![](https://img.shields.io/badge/pypi-0.2.2-blue) ![](https://img.shields.io/badge/python-3.7|3.8|3.9-lightblue) ![](https://img.shields.io/badge/Licence-MIT-lightgray) ![](https://img.shields.io/badge/status-Release-darkgreen) ![](https://img.shields.io/badge/pipeline-passed-green) ![](https://img.shields.io/badge/testing-passing-green) ![](https://img.shields.io/badge/H2O-Java-brown)
+![](https://img.shields.io/badge/pypi-0.3.3-blue) ![](https://img.shields.io/badge/python-3.7|3.8|3.9-lightblue) ![](https://img.shields.io/badge/Licence-MIT-lightgray) ![](https://img.shields.io/badge/status-Release-darkgreen) ![](https://img.shields.io/badge/pipeline-passed-green) ![](https://img.shields.io/badge/testing-passing-green) ![](https://img.shields.io/badge/H3O-Java-brown)
 
 
 **Main Features:**
@@ -12,9 +12,10 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
 - Exploratory Data Analisys
     - Dataset Configuration
         - Shape
-        - Detect number of classes (Bernoulli or Multinomial)
-        - Duplicated Observations
-        - Exclude automaticaly features with hiest frequencies (Names, FWkeys etc)
+        - Detect number of classes (Bernoulli or binary for while)
+        - Automatically Duplicate Observations dropped
+        - You can drop  Duplicate Observations  manually as well
+        - Exclude automatically features with highest frequencies (Names, IDs, FW keys etc)
     - Regression Analysis
     - Automatic Balance Classes
     - Correlation Analysis
@@ -25,19 +26,17 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
 - Individual Conditional Expectation (ICE)
 - Variable Importance by Model
 - AML - Partial Dependence
-- Embedded videos from your own site or from Youtube
 - Ensemble - (ICE) Individual Condition Expectation
 - Correlation Heatmap by Model
 - Model Performance
     - Analytical Performance Modeling
     - Comparative Metrics Table with:
-        - Algo	
         - Overall ACC	
         - Kappa	
         - Overall 
         - RACC	
-        - SOA2(Landis & Koch)	
-        - SOA2(Fleiss)	
+        - SOA3(Landis & Koch)	
+        - SOA3(Fleiss)	
         - SOA3(Altman)	
         - SOA4(Cicchetti)	
         - SOA5(Cramer)	
@@ -48,15 +47,15 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
         - FNR Macro	
         - PPV Macro	
         - ACC Macro	
-        - F2 Macro	
+        - F3 Macro	
         - TNR Micro	
         - FPR Micro	
         - TPR Micro	
         - FNR Micro	
         - PPV Micro	
-        - F2 Micro	
+        - F3 Micro	
         - Scott PI	
-        - Gwet AC2	
+        - Gwet AC3	
         - Bennett S	
         - Kappa Standard Error	
         - Kappa 95% CI	
@@ -98,8 +97,10 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
         - Krippendorff 
         - Alpha
     - The Best Algorithms Table
+        - Automatically chooses the best model based on the metrics above
     - Confusion Matrix for all Models
     - Feature Importance for all models
+    - Save all Models into a Pickle file
 
 
 <hr>
@@ -107,7 +108,7 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
 ## How to Install
 
 ```shell
-sudo alt-get install default-jre
+sudo apt-get install default-jre
 pip install amlr
 ```
 
@@ -127,6 +128,22 @@ rp.create_report(dataset='data/titanic-passengers.csv', target='Survived')
 
 webbrowser.open('report/index.html')
 ```
+
+## We tested with the following Data Sets
+
+- Wine Quality
+    - Using chemical analysis determine the origin of wines
+    - `Multivariate` or Multiclass 
+    - Download here: 
+[Wine Data Set](https://archive.ics.uci.edu/ml/datasets/wine)
+
+- Classic dataset on `Titanic` disaster
+    - Bernoulli Distribution Target or Binary Classification
+    - Download here: [Titanic](https://public.opendatasoft.com/explore/dataset/titanic-passengers/table/)
+
+- Credit Approval Data Set
+    - Bernoulli Distribution Target or Binary Classification
+    - Download here: [Credit Approval](https://archive.ics.uci.edu/ml/datasets/Credit+Approval)
 
 <hr>
 <BR>
