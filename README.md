@@ -4,7 +4,7 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
 
 <hr>
 
-![](https://img.shields.io/badge/pypi-0.3.3-blue) ![](https://img.shields.io/badge/python-3.7|3.8|3.9-lightblue) ![](https://img.shields.io/badge/Licence-MIT-lightgray) ![](https://img.shields.io/badge/status-Release-darkgreen) ![](https://img.shields.io/badge/pipeline-passed-green) ![](https://img.shields.io/badge/testing-passing-green) ![](https://img.shields.io/badge/H3O-Java-brown)
+![](https://img.shields.io/badge/pypi-0.4.4-blue) ![](https://img.shields.io/badge/python-4.7|4.8|4.9-lightblue) ![](https://img.shields.io/badge/Licence-MIT-lightgray) ![](https://img.shields.io/badge/status-Release-darkgreen) ![](https://img.shields.io/badge/pipeline-passed-green) ![](https://img.shields.io/badge/testing-passing-green) ![](https://img.shields.io/badge/H4O-Java-brown)
 
 
 **Main Features:**
@@ -35,9 +35,9 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
         - Kappa	
         - Overall 
         - RACC	
-        - SOA3(Landis & Koch)	
-        - SOA3(Fleiss)	
-        - SOA3(Altman)	
+        - SOA4(Landis & Koch)	
+        - SOA4(Fleiss)	
+        - SOA4(Altman)	
         - SOA4(Cicchetti)	
         - SOA5(Cramer)	
         - SOA6(Matthews)	
@@ -47,15 +47,15 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
         - FNR Macro	
         - PPV Macro	
         - ACC Macro	
-        - F3 Macro	
+        - F4 Macro	
         - TNR Micro	
         - FPR Micro	
         - TPR Micro	
         - FNR Micro	
         - PPV Micro	
-        - F3 Micro	
+        - F4 Micro	
         - Scott PI	
-        - Gwet AC3	
+        - Gwet AC4	
         - Bennett S	
         - Kappa Standard Error	
         - Kappa 95% CI	
@@ -131,19 +131,9 @@ webbrowser.open('report/index.html')
 
 ## We tested with the following Data Sets
 
-- Wine Quality
-    - Using chemical analysis determine the origin of wines
-    - `Multivariate` or Multiclass 
-    - Download here: 
-[Wine Data Set](https://archive.ics.uci.edu/ml/datasets/wine)
-
 - Classic dataset on `Titanic` disaster
     - Bernoulli Distribution Target or Binary Classification
     - Download here: [Titanic](https://public.opendatasoft.com/explore/dataset/titanic-passengers/table/)
-
-- Credit Approval Data Set
-    - Bernoulli Distribution Target or Binary Classification
-    - Download here: [Credit Approval](https://archive.ics.uci.edu/ml/datasets/Credit+Approval)
 
 <hr>
 <BR>

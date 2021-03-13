@@ -33,15 +33,387 @@ from sklearn.metrics import confusion_matrix
 
 class report:
 
-    class binary_class:
+    def binary_class(self, dataset, type, target, 
+                     duplicated, sep, exclude):
+
+        img = plt.figure()
+        self.write_image(img,'blank',width=600,height=500)
         
-        def __init__(self):
-            pass
+        self.gstep(0, "Reading Dataset")
+        
+        buffer = io.StringIO()
+        self.dfo = pd.read_csv(dataset, sep=sep)
+        self.dfo.columns = [c.replace(' ', '_') for c in self.dfo.columns]
 
-    class multi_class:
+        self.gstep(1, "Verify if duplicated")
+        self.insert_text("shape", str(self.dfo.shape[0]) + ' / ' + str(self.dfo.shape[1]))
+        self.get_classes(self.dfo, target)
+        self.insert_text("nclasses", str(self.nclasses))
+        self.insert_text("allclasses", str(self.allclasses))
+        shape_before = self.dfo.shape[0]
+        if duplicated:
+            self.dfo = self.dfo.drop_duplicates(self.dfo.columns)
+            shape_after = self.dfo.shape[0]
+        if shape_before == shape_after:
+            self.insert_text("duplicated", "none")
+        else:
+            self.insert_text("duplicated", str(shape_after - shape_before))
+        
+        if exclude != 'none':
+            self.dfo.drop(columns=exclude, inplace=True)
 
-        def __init__(self):
-            pass
+        self.gstep(1, "Detecting hi frequency features")
+        exclude = self.hi_freq(self.dfo)
+        self.dfo.drop(columns=exclude['Feature'], inplace=True)
+        
+        hi_freq = self.w_table(data=exclude, border=0, align='left', 
+                       collapse='collapse', color='black', 
+                       foot=False)
+        self.insert_text("excluded", hi_freq)
+
+        self.gstep(1, "Encoding as sort_by_response")
+        self.dfo_encode = self.encode(self.dfo.copy())
+        
+        self.gstep(1, "Basic Informations")
+        
+        df_info = pd.DataFrame()
+        for column in self.dfo.columns:
+            not_null = int(self.dfo.shape[0] - int(self.dfo[column].isna().sum()))
+            dtype = self.dfo[column].dtypes
+            df_info = df_info.append({'column': column, 'not_null': not_null, 'dtype': dtype}, ignore_index=True)
+        df_info['not_null'] = df_info['not_null'].apply(lambda x: int(x))
+        df_info['percent'] = df_info['not_null'].apply(lambda x: float("{:.4f}".format(1-(x/self.dfo.shape[0]))))
+        info_dataset = self.w_table(data=df_info, border=0, align='left', 
+                       collapse='collapse', color='black', 
+                       foot=False)
+        self.insert_text("info_dataset", info_dataset)
+
+        self.gstep(1, "Computing Regression")
+
+        Y = self.dfo_encode[target]
+        dfo_num = self.dfo_encode[self.dfo_encode._get_numeric_data().columns]
+        X = dfo_num.drop(columns=[target])
+
+
+        # Criando os dados de train e test
+        X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.3, random_state=42)
+
+        cols = X.columns
+        formule = " + ".join(map(str, cols))
+        formule = target + " ~ " + formule
+        reg = smf.ols(formule, data = dfo_num)
+        res = reg.fit()
+        self.insert_text('regression',str(res.summary()))
+
+        self.gstep(1, "Unbalance Classes")
+
+        temp = self.dfo[target].value_counts()
+        df = pd.DataFrame({target: temp.index,'values': temp.values})
+        plt.figure(figsize = (6,6))
+        plt.title('Data Set - target value - data unbalance\n (' + target + ')')
+        sns.set_color_codes("pastel")
+        sns.barplot(x = target, y="values", data=df)
+        locs, labels = plt.xticks()
+        self.write_image(plt, "unbalance", width=500, height=350,crop=True)
+        
+        self.gstep(1, "Correlation")
+
+        plt.clf()
+        corr = self.dfo_encode.corr()
+        mask = np.zeros_like(corr, dtype=bool)
+        mask[np.triu_indices_from(mask)] = True
+        cmap = sns.diverging_palette(230, 20, as_cmap=True)
+        plt.figure(figsize=(8, 8))
+        # Draw the heatmap with the mask and correct aspect ratio
+        sns.heatmap(corr, mask=mask, cmap=cmap, vmax=1, vmin=-1,center=0, annot=True,
+                    square=True, linewidths=1.5, cbar_kws={"shrink": .5})
+        self.write_image(plt, "corr", width=0, height=0,crop=True)
+        
+        self.gstep(1, "Detecting Multicollinearity with VIF")
+
+        y = self.dfo_encode[target]
+        y = y.apply(lambda x: 1 if x == 'yes' else 0) 
+        X = self.dfo_encode.drop(target, axis=1)
+        X = X[X._get_numeric_data().columns]
+        X = X.fillna(0) 
+        X = X.dropna()
+        vif = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
+        cols = X.columns
+        cols = cols[cols!=target]
+        df_m = pd.DataFrame({'cols': cols, 'vif': vif })
+        df_m['significant'] = ''
+        df_m['significant'] = df_m['vif'].apply(self.parse_values)
+        m_vif = self.w_table(data=df_m, border=0, align='left', 
+                       collapse='collapse', color='black', 
+                       foot=False)        
+        self.insert_text("vif", str(m_vif))
+
+        i = 2
+        text = ''
+        text2 = ''
+        for column in self.dfo.columns:
+            feature = self.dfo[column].describe()
+            text = text + '<option value="' + str(i) + '"> ' + column + ' </option>n\t\t\t\t\t\t\t\t'
+            text2 = text2 + "\n\t\t\t\t\t\t\t\t\t\t} else if (selectedValue == '" + str(i) + "') {\n\t\t\t\t\t\t\t\tdivElement.innerHTML = '" + pd.DataFrame(feature).to_html().replace('\n','') + "';\n\t\t\t\t\t\t\t\t"
+            i = i + 1
+        text2 = text2 + '\n\t\t\t\t\t\t\t\t};'            
+        self.insert_text('vif_desc_option',text)
+        self.insert_text('vif_desc_table',text2)
+
+        self.gstep(1, "Residual Analisys")
+
+        plt.clf()
+        model = Ridge()
+        visualizer = ResidualsPlot(model, hist=False, qqplot=True)
+        visualizer.fit(X_train, y_train)
+        visualizer.score(X_test, y_test)
+        self.write_image(plt, "residual1", width=500, height=350,crop=True)    
+        plt.clf()
+        visualizer = ResidualsPlot(model, hist=True, qqplot=False)
+        visualizer.fit(X_train, y_train)
+        visualizer.score(X_test, y_test)
+        self.write_image(plt, "residual2", width=500, height=350,crop=True)
+
+        self.gstep(1, "Initializing H2O")
+        h2o.init()
+        self.gstep(1, "Parsing Data Frame")
+        df = h2o.H2OFrame(self.dfo_encode)
+        self.gstep(1, "Trainning Auto Machine Learning")
+        train, valid, test = df.split_frame(ratios=[0.7, 0.2], seed=1234)
+        x = train.columns
+        y = target
+        x.remove(y)
+        train[y] = train[y].asfactor()
+        test[y] = test[y].asfactor()
+        aml = H2OAutoML(max_models=20, max_runtime_secs=10, 
+                        seed=1, include_algos = ["GLM", "DeepLearning", "DRF","xGBoost","StackedEnsemble"],
+                        balance_classes=True)
+        aml.train(x=x, y=y, training_frame=train)
+
+        lb = h2o.automl.get_leaderboard(aml, extra_columns = 'ALL')        
+        lb = lb.as_data_frame()
+        lb = lb.drop(columns=['rmse','mse','predict_time_per_row_ms'])
+        text = self.w_table(lb)
+        self.insert_text('auto_ml_results', text)
+        self.write_image(aml.varimp_heatmap(),'var_imp_model',width=450,height=400,crop=True)
+
+        self.gstep(1, "AML - Partial Dependence")
+
+        i = 101
+        text = ''
+        text2 = ''
+        for column in tqdm(self.dfo.columns):
+            feature = self.dfo[column].describe()
+            text = text + '<option value="' + str(i) + '"> ' + column + ' </option>n\t\t\t\t\t\t\t\t'
+            text2 = text2 + "\n\t\t\t\t\t\t\t\t\t\t} else if (selectedValue2 == '" + str(i) + "'){\n\t\t\t\t\t\t\t\tdivElement2.innerHTML = '<img src=\"images/img_aml_pd_" + str(i) + ".png\">';\n\t\t\t\t\t\t\t\t"
+            self.write_image(aml.pd_multi_plot(valid,column),'aml_pd_' + str(i),width=600,height=500)
+            i = i + 1
+        text2 = text2 + '\n\t\t\t\t\t\t\t\t};'            
+        self.insert_text('aml_pd_option',text)
+        self.insert_text('aml_pd_image',text2)
+
+        self.gstep(1, "Trainning (GLM) Gradient Linear Model to Ensemble")
+
+        nfolds = 5
+        family="binomial"
+
+        amlr_glm = H2OGeneralizedLinearEstimator(family=family,
+                                            nfolds=nfolds,
+                                            lambda_ = 0,
+                                            balance_classes=True,
+                                            fold_assignment="Modulo",
+                                            compute_p_values = True,
+                                            keep_cross_validation_predictions=True,
+                                            remove_collinear_columns = True)
+        amlr_glm.train(x, y, training_frame=train)
+
+        self.gstep(1, "Trainning (DRF) Dynamic Random Forest to Ensemble")
+        amlr_rf = H2ORandomForestEstimator(ntrees=50,
+                                        nfolds=nfolds,
+                                        fold_assignment="Modulo",
+                                        balance_classes=True,
+                                        keep_cross_validation_predictions=True,
+                                        seed=1)
+        amlr_rf.train(x=x, y=y, training_frame=train)
+
+        self.gstep(1, "Trainning (GBM) Gradient Boost Estimator Model to Ensemble")
+        amlr_gbm = H2OGradientBoostingEstimator(nfolds=nfolds,
+                                            seed=1111,
+                                            balance_classes=True,
+                                            fold_assignment="Modulo",
+                                            keep_cross_validation_predictions = True)
+        amlr_gbm.train(x=x, y=y, training_frame=train)
+
+        self.gstep(1, "Trainning xGBoost Model to Ensemble")
+        amlr_xgb = H2OXGBoostEstimator(booster='dart',
+                                    nfolds=nfolds,
+                                    normalize_type="tree",
+                                    fold_assignment="Modulo",
+                                    keep_cross_validation_predictions=True,
+                                    seed=1234)
+        amlr_xgb.train(x=x,y=y, training_frame=train, validation_frame=valid)
+
+        self.gstep(1, "Trainning Deep Learning Model to Ensemble")
+
+        family="bernoulli"
+        dl_model = H2ODeepLearningEstimator(distribution=family,
+                                hidden=[1],
+                                epochs=1000,
+                                train_samples_per_iteration=-1,
+                                reproducible=True,
+                                activation="Tanh",
+                                single_node_mode=False,
+                                balance_classes=True,
+                                force_load_balance=False,
+                                seed=23123,
+                                tweedie_power=1.5,
+                                score_training_samples=0,
+                                score_validation_samples=0,
+                                stopping_rounds=0)
+        dl_model.train(x=x, y=y, training_frame=train)
+
+        self.gstep(1, "Trainning Ensemble")
+        ensemble = H2OStackedEnsembleEstimator(model_id="amlr_ensemble",
+                                            base_models=[amlr_gbm, amlr_rf, amlr_xgb, amlr_glm])
+        ensemble.train(x=x, y=y, training_frame=train)
+
+        i = 201
+        text = ''
+        text2 = ''
+        self.gstep(1, "Ensamble - (ICE) Individual Condition Expectation")
+        for column in tqdm(self.dfo.columns):
+            feature = self.dfo[column].describe()
+            text = text + '<option value="' + str(i) + '"> ' + column + ' </option>n\t\t\t\t\t\t\t\t'
+            text2 = text2 + "\n\t\t\t\t\t\t\t\t\t\t} else if (selectedValue3 == '" + str(i) + "'){\n\t\t\t\t\t\t\t\tdivElement3.innerHTML = '<img src=\"images/img_ice_pd_" + str(i) + ".png\">';\n\t\t\t\t\t\t\t\t"
+            self.write_image(ensemble.ice_plot(valid,column),'ice_pd_' + str(i),width=600,height=500)
+            i = i + 1
+        text2 = text2 + '\n\t\t\t\t\t\t\t\t};'            
+        self.insert_text('ice_pd_option',text)
+        self.insert_text('ice_pd_image',text2)
+
+        self.gstep(1, "AMLR - Correlation by Model")
+        self.write_image(aml.model_correlation_heatmap(test),'aml_correlation_models')
+
+        self.gstep(1, "Processing Models Performance")
+
+        i = 0
+        dfp = pd.DataFrame({'Algo': []})
+        outcome = list(valid[target].as_data_frame()[target])
+        for algo in ['GLM','Random Forest','GBM','xGBoost','Deep Learning']:
+            plt.clf()
+            if algo == 'GLM':
+                predict = list(amlr_glm.predict(valid).as_data_frame()['predict'])
+                cf_table='cf_glm'
+                cm_glm = ConfusionMatrix(outcome, predict)
+                glm_var_imp = amlr_glm._model_json['output']['variable_importances'].as_data_frame()
+                x = glm_var_imp['percentage']
+                x.index = glm_var_imp['variable']
+                x.sort_values().plot(kind='barh')
+                plt.xlabel('Percentage')
+                fig = plt.gcf()
+                self.write_image(fig,'fi_glm',width=450,height=450)
+                
+                
+            if algo == 'Random Forest':
+                predict = list(amlr_rf.predict(valid).as_data_frame()['predict'])
+                cf_table='cf_rf'
+                cm_rf = ConfusionMatrix(outcome, predict)
+                rf_var_imp = amlr_rf._model_json['output']['variable_importances'].as_data_frame()
+                x = rf_var_imp['percentage']
+                x.index = rf_var_imp['variable']
+                x.sort_values().plot(kind='barh')
+                plt.xlabel('Percentage')
+                fig = plt.gcf()
+                self.write_image(fig,'fi_rf',width=450,height=450)
+            if algo == 'GBM':
+                predict = list(amlr_gbm.predict(valid).as_data_frame()['predict'])
+                cf_table='cf_gbm'
+                cm_gbm = ConfusionMatrix(outcome, predict)
+                gbm_var_imp = amlr_gbm._model_json['output']['variable_importances'].as_data_frame()
+                x = gbm_var_imp['percentage']
+                x.index = gbm_var_imp['variable']
+                x.sort_values().plot(kind='barh')
+                plt.xlabel('Percentage')
+                fig = plt.gcf()
+                self.write_image(fig,'fi_gbm',width=450,height=450)
+            if algo == 'xGBoost':
+                predict = list(amlr_xgb.predict(valid).as_data_frame()['predict'])
+                cf_table='cf_xgb'
+                cm_xgb = ConfusionMatrix(outcome, predict)
+                xgb_var_imp = amlr_xgb._model_json['output']['variable_importances'].as_data_frame()
+                x = xgb_var_imp['percentage']
+                x.index = xgb_var_imp['variable']
+                x.sort_values().plot(kind='barh')
+                plt.xlabel('Percentage')
+                fig = plt.gcf()
+                self.write_image(fig,'fi_xgb',width=450,height=450)
+            if algo == 'Deep Learning':
+                predict = list(dl_model.predict(valid).as_data_frame()['predict'])
+                cf_table='cf_dl'
+                cm_dl = ConfusionMatrix(outcome, predict)
+                dl_var_imp = dl_model._model_json['output']['variable_importances'].as_data_frame()
+                x = dl_var_imp['percentage']
+                x.index = dl_var_imp['variable']
+                x.sort_values().plot(kind='barh')
+                plt.xlabel('Percentage')
+                fig = plt.gcf()
+                self.write_image(fig,'fi_dl',width=450,height=450)
+            # Confusion Matrix for all models
+            cm = confusion_matrix(predict, outcome)
+            cm = pd.DataFrame(cm)
+            cr = classification_report(outcome, predict,target_names=self.allclasses,output_dict=True)
+            table_cr = pd.DataFrame(cr).transpose().round(4)
+            table_cr.reset_index(level=0, inplace=True)
+            table_cr = table_cr.rename(columns={'index': 'Description'})
+            table_model = self.w_table(data=table_cr, border=0, align='left', 
+                                        collapse='collapse', color='black', 
+                                        foot=False)        
+            self.insert_text(cf_table, str(table_model))            
+
+            # Statistcs for all metrics
+            cm = ConfusionMatrix(outcome, predict)
+            dfp = pd.concat([dfp, pd.DataFrame(cm.overall_stat)[1:]],ignore_index=True)
+            dfp.loc[i:,['Algo']] = algo
+            i = i + 1
+        dfp = dfp.round(4)
+    
+        cp = Compare({'RF':cm_rf,'GLM':cm_glm,'GBM':cm_gbm,'XGB':cm_xgb,'DL':cm_dl})
+        cp_best_name = cp.best_name
+        cp = pd.DataFrame(cp.scores)
+        cp.reset_index(level=0, inplace=True)
+        cp = cp.rename(columns={'index': 'Description'})        
+        table_cp = self.w_table(data=cp, border=0, align='left', 
+                                    collapse='collapse', color='black', 
+                                    foot=False)        
+        if str(cp_best_name) == 'None':
+            cp_best_name = 'Confusion matrices are too close and the best one can not be recognized.'
+            i = 0
+            list_max = list()
+            for column in cp.columns:
+                if i > 0:
+                    if cp[column][0] >= max_v:
+                        list_max.append(column)
+                i = i + 1
+            self.insert_text("the_best_name", "Winners: " + ' - '.join(list_max) + '<br>' + cp_best_name)
+
+        else:
+            self.insert_text("the_best_name", str(cp_best_name))
+        
+        self.insert_text("best_algorithms", str(table_cp))
+        self.insert_text("the_best_name", str(cp_best_name))
+        
+        table_model = self.w_table(data=dfp, border=0, align='left', 
+                                    collapse='collapse', color='black', 
+                                    foot=False)        
+        self.insert_text("table_performance", str(table_model))
+
+        self.gstep(1, "Closing!! All works are done!!")
+        # write report        
+        self.write_report(self.index_html)
+        
+        
+    def multi_class():
+        pass
 
     def __init__(self, output_report='report'):
         resource_package = __name__
@@ -270,382 +642,12 @@ class report:
         if type != 'html':
             raise ValueError("Report type not supported")
 
-        img = plt.figure()
-        self.write_image(img,'blank',width=600,height=500)
-        
-        self.gstep(0, "Reading Dataset")
-        
-        buffer = io.StringIO()
         self.dfo = pd.read_csv(dataset, sep=sep)
-        self.dfo.columns = [c.replace(' ', '_') for c in self.dfo.columns]
 
-        self.gstep(1, "Verify if duplicated")
-        self.insert_text("shape", str(self.dfo.shape[0]) + ' / ' + str(self.dfo.shape[1]))
         self.get_classes(self.dfo, target)
-        self.insert_text("nclasses", str(self.nclasses))
-        self.insert_text("allclasses", str(self.allclasses))
-        shape_before = self.dfo.shape[0]
-        if duplicated:
-            self.dfo = self.dfo.drop_duplicates(self.dfo.columns)
-            shape_after = self.dfo.shape[0]
-        if shape_before == shape_after:
-            self.insert_text("duplicated", "none")
-        else:
-            self.insert_text("duplicated", str(shape_after - shape_before))
-        
-        if exclude != 'none':
-            self.dfo.drop(columns=exclude, inplace=True)
-
-        self.gstep(1, "Detecting hi frequency features")
-        exclude = self.hi_freq(self.dfo)
-        self.dfo.drop(columns=exclude['Feature'], inplace=True)
-        
-        hi_freq = self.w_table(data=exclude, border=0, align='left', 
-                       collapse='collapse', color='black', 
-                       foot=False)
-        self.insert_text("excluded", hi_freq)
-
-        self.gstep(1, "Encoding as sort_by_response")
-        self.dfo_encode = self.encode(self.dfo.copy())
-        
-        self.gstep(1, "Basic Informations")
-        
-        df_info = pd.DataFrame()
-        for column in self.dfo.columns:
-            not_null = int(self.dfo.shape[0] - int(self.dfo[column].isna().sum()))
-            dtype = self.dfo[column].dtypes
-            df_info = df_info.append({'column': column, 'not_null': not_null, 'dtype': dtype}, ignore_index=True)
-        df_info['not_null'] = df_info['not_null'].apply(lambda x: int(x))
-        df_info['percent'] = df_info['not_null'].apply(lambda x: float("{:.4f}".format(1-(x/self.dfo.shape[0]))))
-        info_dataset = self.w_table(data=df_info, border=0, align='left', 
-                       collapse='collapse', color='black', 
-                       foot=False)
-        self.insert_text("info_dataset", info_dataset)
-
-        self.gstep(1, "Computing Regression")
-
-        Y = self.dfo_encode[target]
-        dfo_num = self.dfo_encode[self.dfo_encode._get_numeric_data().columns]
-        X = dfo_num.drop(columns=[target])
-
-
-        # Criando os dados de train e test
-        X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.3, random_state=42)
-
-        cols = X.columns
-        formule = " + ".join(map(str, cols))
-        formule = target + " ~ " + formule
-        reg = smf.ols(formule, data = dfo_num)
-        res = reg.fit()
-        self.insert_text('regression',str(res.summary()))
-
-        self.gstep(1, "Unbalance Classes")
-
-        temp = self.dfo[target].value_counts()
-        df = pd.DataFrame({target: temp.index,'values': temp.values})
-        plt.figure(figsize = (6,6))
-        plt.title('Data Set - target value - data unbalance\n (' + target + ')')
-        sns.set_color_codes("pastel")
-        sns.barplot(x = target, y="values", data=df)
-        locs, labels = plt.xticks()
-        self.write_image(plt, "unbalance", width=500, height=350,crop=True)
-        
-        self.gstep(1, "Correlation")
-
-        plt.clf()
-        corr = self.dfo_encode.corr()
-        mask = np.zeros_like(corr, dtype=bool)
-        mask[np.triu_indices_from(mask)] = True
-        cmap = sns.diverging_palette(230, 20, as_cmap=True)
-        plt.figure(figsize=(8, 8))
-        # Draw the heatmap with the mask and correct aspect ratio
-        sns.heatmap(corr, mask=mask, cmap=cmap, vmax=1, vmin=-1,center=0, annot=True,
-                    square=True, linewidths=1.5, cbar_kws={"shrink": .5})
-        self.write_image(plt, "corr", width=0, height=0,crop=True)
-        
-        self.gstep(1, "Detecting Multicollinearity with VIF")
-
-        y = self.dfo_encode[target]
-        y = y.apply(lambda x: 1 if x == 'yes' else 0) 
-        X = self.dfo_encode.drop(target, axis=1)
-        X = X[X._get_numeric_data().columns]
-        X = X.fillna(0) 
-        X = X.dropna()
-        vif = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
-        cols = X.columns
-        cols = cols[cols!=target]
-        df_m = pd.DataFrame({'cols': cols, 'vif': vif })
-        df_m['significant'] = ''
-        df_m['significant'] = df_m['vif'].apply(self.parse_values)
-        m_vif = self.w_table(data=df_m, border=0, align='left', 
-                       collapse='collapse', color='black', 
-                       foot=False)        
-        self.insert_text("vif", str(m_vif))
-
-        i = 2
-        text = ''
-        text2 = ''
-        for column in self.dfo.columns:
-            feature = self.dfo[column].describe()
-            text = text + '<option value="' + str(i) + '"> ' + column + ' </option>n\t\t\t\t\t\t\t\t'
-            text2 = text2 + "\n\t\t\t\t\t\t\t\t\t\t} else if (selectedValue == '" + str(i) + "') {\n\t\t\t\t\t\t\t\tdivElement.innerHTML = '" + pd.DataFrame(feature).to_html().replace('\n','') + "';\n\t\t\t\t\t\t\t\t"
-            i = i + 1
-        text2 = text2 + '\n\t\t\t\t\t\t\t\t};'            
-        self.insert_text('vif_desc_option',text)
-        self.insert_text('vif_desc_table',text2)
-
-        self.gstep(1, "Residual Analisys")
-
-        plt.clf()
-        model = Ridge()
-        visualizer = ResidualsPlot(model, hist=False, qqplot=True)
-        visualizer.fit(X_train, y_train)
-        visualizer.score(X_test, y_test)
-        self.write_image(plt, "residual1", width=500, height=350,crop=True)    
-        plt.clf()
-        visualizer = ResidualsPlot(model, hist=True, qqplot=False)
-        visualizer.fit(X_train, y_train)
-        visualizer.score(X_test, y_test)
-        self.write_image(plt, "residual2", width=500, height=350,crop=True)
-
-        self.gstep(1, "Initializing H2O")
-        h2o.init()
-        self.gstep(1, "Parsing Data Frame")
-        df = h2o.H2OFrame(self.dfo_encode)
-        self.gstep(1, "Trainning Auto Machine Learning")
-        train, valid, test = df.split_frame(ratios=[0.7, 0.2], seed=1234)
-        x = train.columns
-        y = target
-        x.remove(y)
-        train[y] = train[y].asfactor()
-        test[y] = test[y].asfactor()
-        aml = H2OAutoML(max_models=20, max_runtime_secs=10, 
-                        seed=1, include_algos = ["GLM", "DeepLearning", "DRF","xGBoost","StackedEnsemble"],
-                        balance_classes=True)
-        aml.train(x=x, y=y, training_frame=train)
-
-        lb = h2o.automl.get_leaderboard(aml, extra_columns = 'ALL')        
-        lb = lb.as_data_frame()
-        lb = lb.drop(columns=['rmse','mse','predict_time_per_row_ms'])
-        text = self.w_table(lb)
-        self.insert_text('auto_ml_results', text)
-        self.write_image(aml.varimp_heatmap(),'var_imp_model',width=450,height=400,crop=True)
-
-        self.gstep(1, "AML - Partial Dependence")
-
-        i = 101
-        text = ''
-        text2 = ''
-        for column in tqdm(self.dfo.columns):
-            feature = self.dfo[column].describe()
-            text = text + '<option value="' + str(i) + '"> ' + column + ' </option>n\t\t\t\t\t\t\t\t'
-            text2 = text2 + "\n\t\t\t\t\t\t\t\t\t\t} else if (selectedValue2 == '" + str(i) + "'){\n\t\t\t\t\t\t\t\tdivElement2.innerHTML = '<img src=\"images/img_aml_pd_" + str(i) + ".png\">';\n\t\t\t\t\t\t\t\t"
-            self.write_image(aml.pd_multi_plot(valid,column),'aml_pd_' + str(i),width=600,height=500)
-            i = i + 1
-        text2 = text2 + '\n\t\t\t\t\t\t\t\t};'            
-        self.insert_text('aml_pd_option',text)
-        self.insert_text('aml_pd_image',text2)
-
-        self.gstep(1, "Trainning (GLM) Gradient Linear Model to Ensemble")
-
-        nfolds = 5
         if self.type_class == "b":
-            family="binomial"
+            self.binary_class(dataset, type, target, 
+                      duplicated, sep, exclude)
         else:
-            family="multinomial"
+            raise Exception("Multi Label Classification detected, not allowed for while")
 
-        amlr_glm = H2OGeneralizedLinearEstimator(family=family,
-                                            nfolds=nfolds,
-                                            lambda_ = 0,
-                                            balance_classes=True,
-                                            fold_assignment="Modulo",
-                                            compute_p_values = True,
-                                            keep_cross_validation_predictions=True,
-                                            remove_collinear_columns = True)
-        amlr_glm.train(x, y, training_frame=train)
-
-        self.gstep(1, "Trainning (DRF) Dynamic Random Forest to Ensemble")
-        amlr_rf = H2ORandomForestEstimator(ntrees=50,
-                                        nfolds=nfolds,
-                                        fold_assignment="Modulo",
-                                        balance_classes=True,
-                                        keep_cross_validation_predictions=True,
-                                        seed=1)
-        amlr_rf.train(x=x, y=y, training_frame=train)
-
-        self.gstep(1, "Trainning (GBM) Gradient Boost Estimator Model to Ensemble")
-        amlr_gbm = H2OGradientBoostingEstimator(nfolds=nfolds,
-                                            seed=1111,
-                                            balance_classes=True,
-                                            fold_assignment="Modulo",
-                                            keep_cross_validation_predictions = True)
-        amlr_gbm.train(x=x, y=y, training_frame=train)
-
-        self.gstep(1, "Trainning xGBoost Model to Ensemble")
-        amlr_xgb = H2OXGBoostEstimator(booster='dart',
-                                    nfolds=nfolds,
-                                    normalize_type="tree",
-                                    fold_assignment="Modulo",
-                                    keep_cross_validation_predictions=True,
-                                    seed=1234)
-        amlr_xgb.train(x=x,y=y, training_frame=train, validation_frame=valid)
-
-        self.gstep(1, "Trainning Deep Learning Model to Ensemble")
-        if self.type_class == "b":
-            family="bernoulli"
-        else:
-            family="multinomial"        
-        dl_model = H2ODeepLearningEstimator(distribution=family,
-                                hidden=[1],
-                                epochs=1000,
-                                train_samples_per_iteration=-1,
-                                reproducible=True,
-                                activation="Tanh",
-                                single_node_mode=False,
-                                balance_classes=True,
-                                force_load_balance=False,
-                                seed=23123,
-                                tweedie_power=1.5,
-                                score_training_samples=0,
-                                score_validation_samples=0,
-                                stopping_rounds=0)
-        dl_model.train(x=x, y=y, training_frame=train)
-
-        self.gstep(1, "Trainning Ensemble")
-        ensemble = H2OStackedEnsembleEstimator(model_id="amlr_ensemble",
-                                            base_models=[amlr_gbm, amlr_rf, amlr_xgb, amlr_glm])
-        ensemble.train(x=x, y=y, training_frame=train)
-
-        i = 201
-        text = ''
-        text2 = ''
-        self.gstep(1, "Ensamble - (ICE) Individual Condition Expectation")
-        for column in tqdm(self.dfo.columns):
-            feature = self.dfo[column].describe()
-            text = text + '<option value="' + str(i) + '"> ' + column + ' </option>n\t\t\t\t\t\t\t\t'
-            text2 = text2 + "\n\t\t\t\t\t\t\t\t\t\t} else if (selectedValue3 == '" + str(i) + "'){\n\t\t\t\t\t\t\t\tdivElement3.innerHTML = '<img src=\"images/img_ice_pd_" + str(i) + ".png\">';\n\t\t\t\t\t\t\t\t"
-            self.write_image(ensemble.ice_plot(valid,column),'ice_pd_' + str(i),width=600,height=500)
-            i = i + 1
-        text2 = text2 + '\n\t\t\t\t\t\t\t\t};'            
-        self.insert_text('ice_pd_option',text)
-        self.insert_text('ice_pd_image',text2)
-
-        self.gstep(1, "AMLR - Correlation by Model")
-        self.write_image(aml.model_correlation_heatmap(test),'aml_correlation_models')
-
-        self.gstep(1, "Processing Models Performance")
-
-        i = 0
-        dfp = pd.DataFrame({'Algo': []})
-        outcome = list(valid[target].as_data_frame()[target])
-        for algo in ['GLM','Random Forest','GBM','xGBoost','Deep Learning']:
-            plt.clf()
-            if algo == 'GLM':
-                predict = list(amlr_glm.predict(valid).as_data_frame()['predict'])
-                cf_table='cf_glm'
-                cm_glm = ConfusionMatrix(outcome, predict)
-                glm_var_imp = amlr_glm._model_json['output']['variable_importances'].as_data_frame()
-                x = glm_var_imp['percentage']
-                x.index = glm_var_imp['variable']
-                x.sort_values().plot(kind='barh')
-                plt.xlabel('Percentage')
-                fig = plt.gcf()
-                self.write_image(fig,'fi_glm',width=450,height=450)
-                
-                
-            if algo == 'Random Forest':
-                predict = list(amlr_rf.predict(valid).as_data_frame()['predict'])
-                cf_table='cf_rf'
-                cm_rf = ConfusionMatrix(outcome, predict)
-                rf_var_imp = amlr_rf._model_json['output']['variable_importances'].as_data_frame()
-                x = rf_var_imp['percentage']
-                x.index = rf_var_imp['variable']
-                x.sort_values().plot(kind='barh')
-                plt.xlabel('Percentage')
-                fig = plt.gcf()
-                self.write_image(fig,'fi_rf',width=450,height=450)
-            if algo == 'GBM':
-                predict = list(amlr_gbm.predict(valid).as_data_frame()['predict'])
-                cf_table='cf_gbm'
-                cm_gbm = ConfusionMatrix(outcome, predict)
-                gbm_var_imp = amlr_gbm._model_json['output']['variable_importances'].as_data_frame()
-                x = gbm_var_imp['percentage']
-                x.index = gbm_var_imp['variable']
-                x.sort_values().plot(kind='barh')
-                plt.xlabel('Percentage')
-                fig = plt.gcf()
-                self.write_image(fig,'fi_gbm',width=450,height=450)
-            if algo == 'xGBoost':
-                predict = list(amlr_xgb.predict(valid).as_data_frame()['predict'])
-                cf_table='cf_xgb'
-                cm_xgb = ConfusionMatrix(outcome, predict)
-                xgb_var_imp = amlr_xgb._model_json['output']['variable_importances'].as_data_frame()
-                x = xgb_var_imp['percentage']
-                x.index = xgb_var_imp['variable']
-                x.sort_values().plot(kind='barh')
-                plt.xlabel('Percentage')
-                fig = plt.gcf()
-                self.write_image(fig,'fi_xgb',width=450,height=450)
-            if algo == 'Deep Learning':
-                predict = list(dl_model.predict(valid).as_data_frame()['predict'])
-                cf_table='cf_dl'
-                cm_dl = ConfusionMatrix(outcome, predict)
-                dl_var_imp = dl_model._model_json['output']['variable_importances'].as_data_frame()
-                x = dl_var_imp['percentage']
-                x.index = dl_var_imp['variable']
-                x.sort_values().plot(kind='barh')
-                plt.xlabel('Percentage')
-                fig = plt.gcf()
-                self.write_image(fig,'fi_dl',width=450,height=450)
-            # Confusion Matrix for all models
-            cm = confusion_matrix(predict, outcome)
-            cm = pd.DataFrame(cm)
-            cr = classification_report(outcome, predict,target_names=self.allclasses,output_dict=True)
-            table_cr = pd.DataFrame(cr).transpose().round(4)
-            table_cr.reset_index(level=0, inplace=True)
-            table_cr = table_cr.rename(columns={'index': 'Description'})
-            table_model = self.w_table(data=table_cr, border=0, align='left', 
-                                        collapse='collapse', color='black', 
-                                        foot=False)        
-            self.insert_text(cf_table, str(table_model))            
-
-            # Statistcs for all metrics
-            cm = ConfusionMatrix(outcome, predict)
-            dfp = pd.concat([dfp, pd.DataFrame(cm.overall_stat)[1:]],ignore_index=True)
-            dfp.loc[i:,['Algo']] = algo
-            i = i + 1
-        dfp = dfp.round(4)
-    
-        cp = Compare({'RF':cm_rf,'GLM':cm_glm,'GBM':cm_gbm,'XGB':cm_xgb,'DL':cm_dl})
-        cp_best_name = cp.best_name
-        cp = pd.DataFrame(cp.scores)
-        cp.reset_index(level=0, inplace=True)
-        cp = cp.rename(columns={'index': 'Description'})        
-        table_cp = self.w_table(data=cp, border=0, align='left', 
-                                    collapse='collapse', color='black', 
-                                    foot=False)        
-        if str(cp_best_name) == 'None':
-            cp_best_name = 'Confusion matrices are too close and the best one can not be recognized.'
-            i = 0
-            list_max = list()
-            for column in cp.columns:
-                if i > 0:
-                    if cp[column][0] >= max_v:
-                        list_max.append(column)
-                i = i + 1
-            self.insert_text("the_best_name", "Winners: " + ' - '.join(list_max) + '<br>' + cp_best_name)
-
-        else:
-            self.insert_text("the_best_name", str(cp_best_name))
-        
-        self.insert_text("best_algorithms", str(table_cp))
-        self.insert_text("the_best_name", str(cp_best_name))
-        
-        table_model = self.w_table(data=dfp, border=0, align='left', 
-                                    collapse='collapse', color='black', 
-                                    foot=False)        
-        self.insert_text("table_performance", str(table_model))
-
-        self.gstep(1, "Closing!! All works are done!!")
-        # write report        
-        self.write_report(self.index_html)
