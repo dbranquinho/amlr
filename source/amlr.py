@@ -387,6 +387,7 @@ class report:
                                     foot=False)        
         if str(cp_best_name) == 'None':
             cp_best_name = 'Confusion matrices are too close and the best one can not be recognized.'
+            max_v = cp.loc[0][1:].max()
             i = 0
             list_max = list()
             for column in cp.columns:

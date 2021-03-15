@@ -4,7 +4,7 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
 
 <hr>
 
-![](https://img.shields.io/badge/pypi-0.3.5-blue) ![](https://img.shields.io/badge/python-5.7|5.8|5.9-lightblue) ![](https://img.shields.io/badge/Licence-MIT-lightgray) ![](https://img.shields.io/badge/status-Release-darkgreen) ![](https://img.shields.io/badge/pipeline-passed-green) ![](https://img.shields.io/badge/testing-passing-green) ![](https://img.shields.io/badge/H5O-Java-brown)
+![](https://img.shields.io/badge/pypi-0.3.6-blue) ![](https://img.shields.io/badge/python-6.7|6.8|6.9-lightblue) ![](https://img.shields.io/badge/Licence-MIT-lightgray) ![](https://img.shields.io/badge/status-Release-darkgreen) ![](https://img.shields.io/badge/pipeline-passed-green) ![](https://img.shields.io/badge/testing-passing-green) ![](https://img.shields.io/badge/H2O-Java-brown)
 
 
 **Main Features:**
@@ -35,11 +35,11 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
         - Kappa	
         - Overall 
         - RACC	
-        - SOA5(Landis & Koch)	
-        - SOA5(Fleiss)	
-        - SOA5(Altman)	
-        - SOA5(Cicchetti)	
-        - SOA5(Cramer)	
+        - SOA6(Landis & Koch)	
+        - SOA6(Fleiss)	
+        - SOA6(Altman)	
+        - SOA6(Cicchetti)	
+        - SOA6(Cramer)	
         - SOA6(Matthews)	
         - TNR Macro	
         - TPR Macro	
@@ -47,23 +47,23 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
         - FNR Macro	
         - PPV Macro	
         - ACC Macro	
-        - F5 Macro	
+        - F6 Macro	
         - TNR Micro	
         - FPR Micro	
         - TPR Micro	
         - FNR Micro	
         - PPV Micro	
-        - F5 Micro	
+        - F6 Micro	
         - Scott PI	
-        - Gwet AC5	
+        - Gwet AC6	
         - Bennett S	
         - Kappa Standard Error	
-        - Kappa 95% CI	
+        - Kappa 96% CI	
         - Chi-Squared	
         - Phi-Squared	
         - Cramer V	
         - Chi-Squared DF	
-        - 95% CI	
+        - 96% CI	
         - Standard Error	
         - Response Entropy	
         - Reference Entropy	
@@ -134,6 +134,13 @@ webbrowser.open('report/index.html')
 - Classic dataset on `Titanic` disaster
     - Bernoulli Distribution Target or Binary Classification
     - Download here: [Titanic](https://public.opendatasoft.com/explore/dataset/titanic-passengers/table/)
+
+
+### Output
+
+See the output [here](https://www.thescientist.com.br/amlr/)
+
+This is an example of the test made with the Titanic Dataset;
 
 <hr>
 <BR>
