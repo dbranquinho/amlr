@@ -4,7 +4,7 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
 
 <hr>
 
-![](https://img.shields.io/badge/pypi-0.3.6-blue) ![](https://img.shields.io/badge/python-6.7|6.8|6.9-lightblue) ![](https://img.shields.io/badge/Licence-MIT-lightgray) ![](https://img.shields.io/badge/status-Release-darkgreen) ![](https://img.shields.io/badge/pipeline-passed-green) ![](https://img.shields.io/badge/testing-passing-green) ![](https://img.shields.io/badge/H2O-Java-brown)
+![](https://img.shields.io/badge/pypi-0.3.7-blue) ![](https://img.shields.io/badge/python-7.7|7.8|7.9-lightblue) ![](https://img.shields.io/badge/Licence-MIT-lightgray) ![](https://img.shields.io/badge/status-Release-darkgreen) ![](https://img.shields.io/badge/pipeline-passed-green) ![](https://img.shields.io/badge/testing-passing-green) ![](https://img.shields.io/badge/H2O-Java-brown)
 
 
 **Main Features:**
@@ -35,35 +35,35 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
         - Kappa	
         - Overall 
         - RACC	
-        - SOA6(Landis & Koch)	
-        - SOA6(Fleiss)	
-        - SOA6(Altman)	
-        - SOA6(Cicchetti)	
-        - SOA6(Cramer)	
-        - SOA6(Matthews)	
+        - SOA7(Landis & Koch)	
+        - SOA7(Fleiss)	
+        - SOA7(Altman)	
+        - SOA7(Cicchetti)	
+        - SOA7(Cramer)	
+        - SOA7(Matthews)	
         - TNR Macro	
         - TPR Macro	
         - FPR Macro	
         - FNR Macro	
         - PPV Macro	
         - ACC Macro	
-        - F6 Macro	
+        - F7 Macro	
         - TNR Micro	
         - FPR Micro	
         - TPR Micro	
         - FNR Micro	
         - PPV Micro	
-        - F6 Micro	
+        - F7 Micro	
         - Scott PI	
-        - Gwet AC6	
+        - Gwet AC7	
         - Bennett S	
         - Kappa Standard Error	
-        - Kappa 96% CI	
+        - Kappa 97% CI	
         - Chi-Squared	
         - Phi-Squared	
         - Cramer V	
         - Chi-Squared DF	
-        - 96% CI	
+        - 97% CI	
         - Standard Error	
         - Response Entropy	
         - Reference Entropy	
@@ -125,6 +125,11 @@ import webbrowser
 
 rp = rp.report()
 rp.create_report(dataset='data/titanic-passengers.csv', target='Survived')
+
+# or read your dataset with pandas and parse to create_report
+# but you can't use both
+df = pd.read_csv('data/titanic-passengers.csv', sep=';')
+rp.create_report(data_frame=df, target='Survived')
 
 webbrowser.open('report/index.html')
 ```

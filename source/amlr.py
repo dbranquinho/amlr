@@ -33,7 +33,7 @@ from sklearn.metrics import confusion_matrix
 
 class report:
 
-    def binary_class(self, dataset, type, target, 
+    def binary_class(self, type, target, 
                      duplicated, sep, exclude):
 
         img = plt.figure()
@@ -42,7 +42,6 @@ class report:
         self.gstep(0, "Reading Dataset")
         
         buffer = io.StringIO()
-        self.dfo = pd.read_csv(dataset, sep=sep)
         self.dfo.columns = [c.replace(' ', '_') for c in self.dfo.columns]
 
         self.gstep(1, "Verify if duplicated")
@@ -631,23 +630,23 @@ class report:
                 exclude = exclude.append({'Feature': column, 'Freq': nr/total}, ignore_index=True)
         return exclude
                         
-    def create_report(self, dataset='none', 
-                      type='html', 
-                      target='none', 
-                      duplicated=True,
-                      sep=';', exclude='none'):
+    def create_report(self, dataset='none', data_frame='none',
+                      type='html', target='none', 
+                      duplicated=True, sep=';', exclude='none'):
+        
         if dataset == 'none':
-            raise ValueError("Dataset not found")
+            self.dfo = data_frame.copy()
         if target == 'none':
             raise ValueError("Target not defined")
         if type != 'html':
             raise ValueError("Report type not supported")
-
-        self.dfo = pd.read_csv(dataset, sep=sep)
-
+        
+        if dataset != 'none':
+            self.dfo = pd.read_csv(dataset, sep=sep)
+            
         self.get_classes(self.dfo, target)
         if self.type_class == "b":
-            self.binary_class(dataset, type, target, 
+            self.binary_class(type, target, 
                       duplicated, sep, exclude)
         else:
             raise Exception("Multi Label Classification detected, not allowed for while")
