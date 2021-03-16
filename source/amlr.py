@@ -33,8 +33,7 @@ from sklearn.metrics import confusion_matrix
 
 class report:
 
-    def binary_class(self, type, target, 
-                     duplicated, sep, exclude):
+    def binary_class(self, type, target, duplicated, sep, exclude, max_runtime_secs):
 
         img = plt.figure()
         self.write_image(img,'blank',width=600,height=500)
@@ -184,7 +183,7 @@ class report:
         x.remove(y)
         train[y] = train[y].asfactor()
         test[y] = test[y].asfactor()
-        aml = H2OAutoML(max_models=20, max_runtime_secs=10, 
+        aml = H2OAutoML(max_models=20, max_runtime_secs=max_runtime_secs, 
                         seed=1, include_algos = ["GLM", "DeepLearning", "DRF","xGBoost","StackedEnsemble"],
                         balance_classes=True)
         aml.train(x=x, y=y, training_frame=train)
@@ -219,6 +218,7 @@ class report:
         amlr_glm = H2OGeneralizedLinearEstimator(family=family,
                                             nfolds=nfolds,
                                             lambda_ = 0,
+                                            max_runtime_secs=max_runtime_secs,
                                             balance_classes=True,
                                             fold_assignment="Modulo",
                                             compute_p_values = True,
@@ -230,6 +230,7 @@ class report:
         amlr_rf = H2ORandomForestEstimator(ntrees=50,
                                         nfolds=nfolds,
                                         fold_assignment="Modulo",
+                                        max_runtime_secs=max_runtime_secs,
                                         balance_classes=True,
                                         keep_cross_validation_predictions=True,
                                         seed=1)
@@ -240,6 +241,7 @@ class report:
                                             seed=1111,
                                             balance_classes=True,
                                             fold_assignment="Modulo",
+                                            max_runtime_secs=max_runtime_secs,
                                             keep_cross_validation_predictions = True)
         amlr_gbm.train(x=x, y=y, training_frame=train)
 
@@ -248,6 +250,7 @@ class report:
                                     nfolds=nfolds,
                                     normalize_type="tree",
                                     fold_assignment="Modulo",
+                                    max_runtime_secs=max_runtime_secs,
                                     keep_cross_validation_predictions=True,
                                     seed=1234)
         amlr_xgb.train(x=x,y=y, training_frame=train, validation_frame=valid)
@@ -266,6 +269,7 @@ class report:
                                 force_load_balance=False,
                                 seed=23123,
                                 tweedie_power=1.5,
+                                max_runtime_secs=max_runtime_secs,
                                 score_training_samples=0,
                                 score_validation_samples=0,
                                 stopping_rounds=0)
@@ -632,7 +636,8 @@ class report:
                         
     def create_report(self, dataset='none', data_frame='none',
                       type='html', target='none', 
-                      duplicated=True, sep=';', exclude='none'):
+                      duplicated=True, sep=';', exclude='none',
+                      max_runtime_secs=0):
         
         if dataset == 'none':
             self.dfo = data_frame.copy()
@@ -646,8 +651,7 @@ class report:
             
         self.get_classes(self.dfo, target)
         if self.type_class == "b":
-            self.binary_class(type, target, 
-                      duplicated, sep, exclude)
+            self.binary_class(type, target, duplicated, sep, exclude, max_runtime_secs)
         else:
             raise Exception("Multi Label Classification detected, not allowed for while")
 

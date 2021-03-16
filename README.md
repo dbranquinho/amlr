@@ -4,7 +4,7 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
 
 <hr>
 
-![](https://img.shields.io/badge/pypi-0.3.7-blue) ![](https://img.shields.io/badge/python-7.7|7.8|7.9-lightblue) ![](https://img.shields.io/badge/Licence-MIT-lightgray) ![](https://img.shields.io/badge/status-Release-darkgreen) ![](https://img.shields.io/badge/pipeline-passed-green) ![](https://img.shields.io/badge/testing-passing-green) ![](https://img.shields.io/badge/H2O-Java-brown)
+![](https://img.shields.io/badge/pypi-0.3.8-blue) ![](https://img.shields.io/badge/python-8.8|8.8|8.9-lightblue) ![](https://img.shields.io/badge/Licence-MIT-lightgray) ![](https://img.shields.io/badge/status-Release-darkgreen) ![](https://img.shields.io/badge/pipeline-passed-green) ![](https://img.shields.io/badge/testing-passing-green) ![](https://img.shields.io/badge/H2O-Java-brown)
 
 
 **Main Features:**
@@ -35,35 +35,35 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
         - Kappa	
         - Overall 
         - RACC	
-        - SOA7(Landis & Koch)	
-        - SOA7(Fleiss)	
-        - SOA7(Altman)	
-        - SOA7(Cicchetti)	
-        - SOA7(Cramer)	
-        - SOA7(Matthews)	
+        - SOA8(Landis & Koch)	
+        - SOA8(Fleiss)	
+        - SOA8(Altman)	
+        - SOA8(Cicchetti)	
+        - SOA8(Cramer)	
+        - SOA8(Matthews)	
         - TNR Macro	
         - TPR Macro	
         - FPR Macro	
         - FNR Macro	
         - PPV Macro	
         - ACC Macro	
-        - F7 Macro	
+        - F8 Macro	
         - TNR Micro	
         - FPR Micro	
         - TPR Micro	
         - FNR Micro	
         - PPV Micro	
-        - F7 Micro	
+        - F8 Micro	
         - Scott PI	
-        - Gwet AC7	
+        - Gwet AC8	
         - Bennett S	
         - Kappa Standard Error	
-        - Kappa 97% CI	
+        - Kappa 98% CI	
         - Chi-Squared	
         - Phi-Squared	
         - Cramer V	
         - Chi-Squared DF	
-        - 97% CI	
+        - 98% CI	
         - Standard Error	
         - Response Entropy	
         - Reference Entropy	
@@ -124,17 +124,28 @@ from amlr import amlr as rp
 import webbrowser
 
 rp = rp.report()
-rp.create_report(dataset='data/titanic-passengers.csv', target='Survived')
-
-# or read your dataset with pandas and parse to create_report
-# but you can't use both
-df = pd.read_csv('data/titanic-passengers.csv', sep=';')
-rp.create_report(data_frame=df, target='Survived')
+rp.create_report(dataset='data/titanic-passengers.csv', target='Survived', max_runtime_secs=0)
 
 webbrowser.open('report/index.html')
 ```
+Another option is to load your own data set with `pandas` and switch, or parse, to the` AMLR` report command, but you cannot use both methods. The code will be:
 
-## We tested with the following Data Sets
+```python
+df = pd.read_csv('data/titanic-passengers.csv', sep=';')
+rp.create_report(data_frame=df, target='Survived', max_runtime_secs=0)
+```
+
+### max_run_time
+
+When building a model, this option specifes the maximum runtime in seconds that you want to allot in order to complete the model. If this maximum runtime is exceeded before the model build is completed, then the model will fail.
+
+Specifying max_runtime_secs=0 disables this option for production enviroment, thus allowing for an unlimited amount of runtime. If you just want to do a test, regardless of the results, use 10 seconds or a maximum of 60 seconds.
+
+<BR>
+<hr>
+<BR>
+
+## We tested with the following Dataset
 
 - Classic dataset on `Titanic` disaster
     - Bernoulli Distribution Target or Binary Classification
