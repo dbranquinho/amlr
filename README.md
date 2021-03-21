@@ -4,7 +4,7 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
 
 <hr>
 
-![](https://img.shields.io/badge/pypi-0.3.8-blue) ![](https://img.shields.io/badge/python-8.8|8.8|8.9-lightblue) ![](https://img.shields.io/badge/Licence-MIT-lightgray) ![](https://img.shields.io/badge/status-Release-darkgreen) ![](https://img.shields.io/badge/pipeline-passed-green) ![](https://img.shields.io/badge/testing-passing-green) ![](https://img.shields.io/badge/H2O-Java-brown)
+![](https://img.shields.io/badge/pypi-0.3.9-blue) ![](https://img.shields.io/badge/python-3.7|3.9|3.9-lightblue) ![](https://img.shields.io/badge/Licence-MIT-lightgray) ![](https://img.shields.io/badge/status-Release-darkgreen) ![](https://img.shields.io/badge/pipeline-passed-green) ![](https://img.shields.io/badge/testing-passing-green) ![](https://img.shields.io/badge/H2O-Java-brown)
 
 
 **Main Features:**
@@ -35,35 +35,35 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
         - Kappa	
         - Overall 
         - RACC	
-        - SOA8(Landis & Koch)	
-        - SOA8(Fleiss)	
-        - SOA8(Altman)	
-        - SOA8(Cicchetti)	
-        - SOA8(Cramer)	
-        - SOA8(Matthews)	
+        - SOA9(Landis & Koch)	
+        - SOA9(Fleiss)	
+        - SOA9(Altman)	
+        - SOA9(Cicchetti)	
+        - SOA9(Cramer)	
+        - SOA9(Matthews)	
         - TNR Macro	
         - TPR Macro	
         - FPR Macro	
         - FNR Macro	
         - PPV Macro	
         - ACC Macro	
-        - F8 Macro	
+        - F9 Macro	
         - TNR Micro	
         - FPR Micro	
         - TPR Micro	
         - FNR Micro	
         - PPV Micro	
-        - F8 Micro	
+        - F9 Micro	
         - Scott PI	
-        - Gwet AC8	
+        - Gwet AC9	
         - Bennett S	
         - Kappa Standard Error	
-        - Kappa 98% CI	
+        - Kappa 9% CI	
         - Chi-Squared	
         - Phi-Squared	
         - Cramer V	
         - Chi-Squared DF	
-        - 98% CI	
+        - 9% CI	
         - Standard Error	
         - Response Entropy	
         - Reference Entropy	
