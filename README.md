@@ -4,7 +4,7 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
 
 <hr>
 
-![](https://img.shields.io/badge/pypi-0.3.9-blue) ![](https://img.shields.io/badge/python-3.7|3.9|3.9-lightblue) ![](https://img.shields.io/badge/Licence-MIT-lightgray) ![](https://img.shields.io/badge/status-Release-darkgreen) ![](https://img.shields.io/badge/pipeline-passed-green) ![](https://img.shields.io/badge/testing-passing-green) ![](https://img.shields.io/badge/H2O-Java-brown)
+![](https://img.shields.io/badge/pypi-0.4.0-blue) ![](https://img.shields.io/badge/python-4.7|4.8|4.0-lightblue) ![](https://img.shields.io/badge/Licence-MIT-lightgray) ![](https://img.shields.io/badge/status-Release-darkgreen) ![](https://img.shields.io/badge/pipeline-passed-green) ![](https://img.shields.io/badge/testing-passing-green) ![](https://img.shields.io/badge/H2O-Java-brown)
 
 
 **Main Features:**
@@ -35,35 +35,35 @@ Create a bealtifull Machine Learning Report with *`One-Line-Code`*
         - Kappa	
         - Overall 
         - RACC	
-        - SOA9(Landis & Koch)	
-        - SOA9(Fleiss)	
-        - SOA9(Altman)	
-        - SOA9(Cicchetti)	
-        - SOA9(Cramer)	
-        - SOA9(Matthews)	
+        - SOA0(Landis & Koch)	
+        - SOA0(Fleiss)	
+        - SOA0(Altman)	
+        - SOA0(Cicchetti)	
+        - SOA0(Cramer)	
+        - SOA0(Matthews)	
         - TNR Macro	
         - TPR Macro	
         - FPR Macro	
         - FNR Macro	
         - PPV Macro	
         - ACC Macro	
-        - F9 Macro	
+        - F0 Macro	
         - TNR Micro	
         - FPR Micro	
         - TPR Micro	
         - FNR Micro	
         - PPV Micro	
-        - F9 Micro	
+        - F0 Micro	
         - Scott PI	
-        - Gwet AC9	
+        - Gwet AC0	
         - Bennett S	
         - Kappa Standard Error	
-        - Kappa 9% CI	
+        - Kappa 0% CI	
         - Chi-Squared	
         - Phi-Squared	
         - Cramer V	
         - Chi-Squared DF	
-        - 9% CI	
+        - 0% CI	
         - Standard Error	
         - Response Entropy	
         - Reference Entropy	
@@ -134,6 +134,16 @@ Another option is to load your own data set with `pandas` and switch, or parse, 
 df = pd.read_csv('data/titanic-passengers.csv', sep=';')
 rp.create_report(data_frame=df, target='Survived', max_runtime_secs=0)
 ```
+
+### Parameters
+
+* dataset: File to read by AMLR
+* data_frame: Pandas DataFrame
+* target: The target column
+* duplicated: Default `True` Looking for duplicated lines
+* sep: Default `;` if file is a csv, you must explicity the column sepatator character
+* exclude: Default `True` a list with the columns to exclude to the process
+* max_runtime_secs: Default `0` time limit to run deep learnig models
 
 ### max_run_time
 
